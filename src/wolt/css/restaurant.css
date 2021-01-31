@@ -1,0 +1,15 @@
+.restaurant {
+    min-width: calc(1vw + var(--blurhash-width));
+    max-height: calc(0.6vmax + 30px + var(--blurhash-height));
+    font-family: 'Cantarell';
+    font-size: calc(0.6vmax + 7px);
+    transition: all var(--hover-transition-duration);
+}
+
+.restaurant__title {
+    display: grid;
+    align-items: center;
+    grid-template-rows: calc(0.6vmax + 30px);
+}
+
+.restaurant:hover { font-size: calc(0.6vmax + 13px); }

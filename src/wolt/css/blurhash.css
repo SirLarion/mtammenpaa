@@ -1,0 +1,27 @@
+.blurhash {
+    width: var(--blurhash-width);
+}
+
+.blurhash--normal {
+    mask: url('../resources/blurhash_mask.svg');
+    mask-size: 100% 100%;
+}
+
+.blurhash--small {
+    mask: url('../resources/blurhash_mask_small.svg');
+    mask-size: 100% 100%;
+}
+
+.blurhash__mask { 
+    width: var(--blurhash-width);
+    position: absolute;
+    z-index: 10;
+}
+
+.blurhash__mask--online {
+    opacity: 0;
+}
+
+.blurhash__mask--offline {
+    opacity: 0.4;    
+}
