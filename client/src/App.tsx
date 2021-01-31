@@ -5,6 +5,15 @@ import NotWoltApp from './wolt/NotWoltApp';
 
 import './css/App.css';
 
+const express = require('express');
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', function(req,res) {
+		res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 const App: React.FC = () => {
 
     return (
