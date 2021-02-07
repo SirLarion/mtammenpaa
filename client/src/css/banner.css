@@ -1,0 +1,24 @@
+.banner {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat';
+}
+
+.banner__wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.banner__name {
+    height: 16vw;
+}
+
+.banner__promo {
+    height: 16vw;
+    mask: url('../resources/imgmask.svg');
+    mask-size: 100% 100%;
+}
+
+.banner__whitespace {
+    min-height: 30vh;
+}

@@ -1,0 +1,23 @@
+.social {
+    margin: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social__wrapper {
+    display: grid;
+    grid-template-columns: calc(3.9vw + 20px) calc(3.9vw + 20px) calc(3.9vw + 20px); 
+    grid-template-rows: calc(3.9vw + 20px);
+    grid-column-gap: calc(2vw + 20px);
+    grid-row-gap: 20px;
+}
+
+.social__icon {
+    width: calc(3.9vw + 10px);
+    transition: width 0.07s;
+}
+
+.social__icon:hover {
+    width: calc(3.9vw + 20px);
+}
