@@ -15,10 +15,20 @@
 
 .banner__promo {
     height: 16vw;
+    width: 26.5vw;
     mask: url('../resources/imgmask.svg');
     mask-size: 100% 100%;
+}
+
+.promo__wrapper {
+    height: 16vw;
+    width: 26.5vw;
 }
 
 .banner__whitespace {
     min-height: 30vh;
 }
+
+.alice-carousel__dots { display: none !important; }
+.alice-carousel__prev-btn { display: none !important; }
+.alice-carousel__next-btn { display: none !important; }

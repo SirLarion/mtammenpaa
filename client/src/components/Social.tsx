@@ -1,21 +1,32 @@
-import linkedinLogo from '../resources/linkedin.svg';
-import githubLogo from '../resources/github.svg';
-import instagramLogo from '../resources/insta.svg';
-
 import '../css/social.css'; 
 
 const Social: React.FC = () => {
     return (
         <div className='social'>
             <div className='social__wrapper'>
-                <a href='https://www.linkedin.com/in/miska-tammenpaa/' target="_blank" rel="noopener noreferrer">
-                    <img className='social__icon' src={linkedinLogo} alt='LinkedIn logo'/>
+                <a href='https://www.linkedin.com/in/miska-tammenpaa/' draggable={false} target="_blank" rel="noopener noreferrer">
+                    <img 
+                        className='social__icon noselect' 
+                        src='/images/linkedin.svg' 
+                        alt='LinkedIn logo'
+                        draggable={false}
+                    />
                 </a>
-                <a href='https://github.com/SirLarion' target="_blank" rel="noopener noreferrer">
-                    <img className='social__icon' src={githubLogo} alt='Github logo'/>
+                <a href='https://github.com/SirLarion' draggable={false} target="_blank" rel="noopener noreferrer">
+                    <img 
+                        className='social__icon noselect' 
+                        src='/images/github.svg' 
+                        alt='Github logo'
+                        draggable={false}
+                    />
                 </a>
-                <a href='https://www.instagram.com/sirlarion/' target="_blank" rel="noopener noreferrer">
-                    <img className='social__icon' src={instagramLogo} alt='Instagram logo'/>
+                <a href='https://www.instagram.com/sirlarion/' draggable={false} target="_blank" rel="noopener noreferrer">
+                    <img 
+                        className='social__icon noselect' 
+                        src='/images/insta.svg' 
+                        alt='Instagram logo'
+                        draggable={false}
+                    />
                 </a>
             </div>
         </div>

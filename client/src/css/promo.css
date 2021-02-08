@@ -1,0 +1,6 @@
+
+.promo__image {
+    height: 16vw;
+    width: 26.5vw;
+    pointer-events: none; /* Probably temporary */
+}
