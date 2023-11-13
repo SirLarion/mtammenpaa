@@ -1,21 +1,25 @@
 {
-  "name": "server",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Mtammenpaa backend",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "test"
-  },
-  "keywords": [
-    "backend",
-    "express"
-  ],
+  "description": "backyback",
   "author": "Miska Tammenpää",
-  "license": "MIT",
+  "license": "ISC",
+  "scripts": {
+    "start": "bun run --watch index.ts"
+  },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "@elysiajs/cors": "^0.7.1",
+    "@elysiajs/html": "^0.7.3",
+    "@elysiajs/static": "^0.7.1",
+    "@types/fluent-ffmpeg": "^2.1.22",
+    "bun-types": "^1.0.5-canary.20231007T140129",
+    "elysia": "^0.7.15",
+    "fluent-ffmpeg": "^2.1.2",
+    "ramda": "^0.29.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.29.6",
+    "@types/uuid": "^9.0.5"
   }
 }
