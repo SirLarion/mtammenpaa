@@ -1,9 +1,8 @@
-import styled, { css } from "styled-components";
-import { theme } from "./theme";
+import styled, { css } from 'styled-components';
 
 export const textBase = css`
-  font-family: "Montserrat";
-  color: ${theme.dark.foreground.primary};
+  font-family: 'Nimbus Sans';
+  color: ${p => p.theme.foreground.primary};
 `;
 
 export const Heading1 = styled.h1`

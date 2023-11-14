@@ -1,27 +1,28 @@
-type TTheme = Record<string, Record<string, string>>;
+export type TThemeName = 'light' | 'dark';
+export type TTheme = Record<string, Record<string, string>>;
 
 const light: TTheme = {
   foreground: {
-    primary: "#101010",
+    primary: '#1b1b1b',
   },
   background: {
-    primary: "#FFFFF0",
+    primary: '#FBFBFA',
+    secondary: '#EEEEEC',
   },
 };
 
 const dark: TTheme = {
   foreground: {
-    primary: "#DDDDDF",
+    primary: '#DDDDDF',
   },
   background: {
-    primary: "#050e19",
-    secondary: "#0d131c",
-    tertiary: "#080c11",
+    primary: '#050e19',
+    secondary: '#0d131c',
   },
   accent: {
-    navy: "#101654",
-    red: "#c00",
+    navy: '#101654',
+    red: '#c00',
   },
 };
 
-export const theme = { light, dark };
+export const theme: Record<TThemeName, TTheme> = { light, dark };
