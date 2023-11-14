@@ -8,17 +8,34 @@ import { Blog } from './views/Blog';
 import { useGetAllBlogPosts } from './hooks/useGetAllBlogPosts';
 import { Post } from './views/Post';
 import { MainNavigation } from './components/MainNavigation';
+import { Heading1 } from './styles/typography';
+
+import avatar from './assets/profile.jpg';
 
 const StyledApp = styled.div`
   max-height: 100vh;
   max-width: 100vw;
   overflow: hidden;
-  background-color: ${p => p.theme.background.secondary};
+  background-color: ${p => p.theme.background.rainbow};
 `;
 
 const Header = styled.header`
-  min-height: 5rem;
+  display: flex;
+  align-items: center;
+  min-height: 10rem;
   width: 100%;
+
+  h1 {
+    margin: 0.8rem 0 0 2rem;
+    color: ${p => p.theme.accent.rainbow};
+    text-anchor: center;
+  }
+`;
+
+const AvatarImg = styled.img`
+  border-radius: 100%;
+  width: 6rem;
+  height: 6rem;
 `;
 
 const Body = styled.body`
@@ -46,7 +63,10 @@ const App = () => {
             })),
           ]}
         >
-          <Header />
+          <Header>
+            <AvatarImg src={avatar} />
+            <Heading1>Miska Tammenpää</Heading1>
+          </Header>
           <Body>
             <Routes>
               <Route path="/" element={<Intro />} />

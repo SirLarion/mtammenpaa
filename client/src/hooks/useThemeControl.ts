@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { assocPath } from 'ramda';
+import { mergeDeepRight } from 'ramda';
+import convert from 'color-convert';
+import contrast from 'color-contrast';
 
 import { theme as themeObj, TThemeName } from '../styles/theme';
 
@@ -11,35 +13,71 @@ const getInitialTheme = (): TThemeName | undefined => {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   if (prefersLight) return 'light';
-  if (prefersDark) return 'light';
+  if (prefersDark) return 'dark';
 
   return undefined;
 };
 
-const getSecondaryBackground = (t: TThemeName) => {
+type HSL = number[];
+
+const contrastHsl = (hsl1: HSL, hsl2: HSL) =>
+  contrast(
+    convert.hsl.hex(hsl1[0], hsl1[1], hsl1[2]),
+    convert.hsl.hex(hsl2[0], hsl2[1], hsl2[2])
+  );
+
+const generateHighContrastColor = (bg: HSL) => {
+  const h = bg[0];
+  let s = bg[1] + 35;
+  let l = bg[2] - 40;
+  let factor = contrastHsl([h, s, l], bg);
+  let i = 0;
+  while (factor < 4.5 && i < 100) {
+    if (i % 2 === 0) {
+      l--;
+    } else {
+      s++;
+    }
+    factor = contrastHsl([h, s, l], bg);
+    i++;
+  }
+  console.log(factor);
+
+  return [h, s, l];
+};
+
+const getGeneratedColors = (t: TThemeName) => {
   const h = Math.floor(Math.random() * 360);
   const s = 35;
-  const l = t === 'light' ? 85 : 15;
+  const isLight = t === 'light';
+  const l = isLight ? 85 : 15;
 
-  return `hsl(${h}, ${s}%, ${l}%)`;
+  const dark = generateHighContrastColor([h, s, l]);
+
+  return {
+    background: {
+      rainbow: `hsl(${h}, ${s}%, ${l}%)`,
+    },
+    accent: {
+      rainbow: `hsl(${h}, ${dark[1]}%, ${isLight ? dark[2] : l + 30}%)`,
+      rainbowLight: `hsl(${h}, ${s}%, ${isLight ? l - 5 : l + 5}%)`,
+    },
+  };
 };
 
 export const useThemeControl = () => {
   const [themeName, setTheme] = useState<TThemeName>(
     getInitialTheme() || 'light'
   );
-  const [secondaryBg, _] = useState(getSecondaryBackground(themeName));
+
+  const [generatedColors, _] = useState(getGeneratedColors(themeName));
 
   const toggleTheme = () => setTheme(t => (t === 'light' ? 'dark' : 'light'));
 
   return {
     isLightTheme: themeName === 'light',
     isDarkTheme: themeName === 'dark',
-    theme: assocPath(
-      ['background', 'secondary'],
-      secondaryBg,
-      themeObj[themeName]
-    ),
+    theme: mergeDeepRight(themeObj[themeName], generatedColors),
     toggleTheme,
   };
 };

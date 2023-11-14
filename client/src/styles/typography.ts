@@ -1,8 +1,13 @@
 import styled, { css } from 'styled-components';
+import { Link as BaseLink } from 'react-router-dom';
 
 export const textBase = css`
   font-family: 'Nimbus Sans';
   color: ${p => p.theme.foreground.primary};
+`;
+
+export const Link = styled(BaseLink)`
+  ${textBase};
 `;
 
 export const Heading1 = styled.h1`

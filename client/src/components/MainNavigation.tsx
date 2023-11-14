@@ -1,6 +1,8 @@
 import React, { FC, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { noSelect } from '../styles/common';
+import { Link } from '../styles/typography';
 
 interface INavItem {
   label: ReactNode;
@@ -19,17 +21,44 @@ const StyledMainNavigation = styled.div`
   justify-content: space-between;
 `;
 
+const MenuItem = styled(Link)`
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: ${p => p.theme.accent.rainbow} !important;
+  text-decoration: none;
+  background-color: ${p => p.theme.background.rainbow};
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border-bottom: 0.25rem solid ${p => p.theme.accent.rainbowLight};
+  cursor: pointer;
+  transition: background-color 100ms ease-in-out;
+  ${noSelect}
+
+  &:hover {
+    background-color: ${p => p.theme.accent.rainbowLight};
+  }
+`;
+
 const LeftMenu = styled.nav`
-  width: 16rem;
+  flex: 1;
 `;
 
 const RightMenu = styled(LeftMenu)``;
 
 const MenuHeader = styled.header`
-  min-height: 5rem;
+  min-height: 10rem;
 `;
 
-const MenuItem = styled.li``;
+const MenuItemList = styled.ul`
+  list-style-type: none;
+  width: 100%;
+  padding: 0 1rem;
+
+  a:not(a:last-of-type) {
+    margin-bottom: 0.5rem;
+  }
+`;
 
 export const MainNavigation: FC<IMainNavigationProps> = ({
   items,
@@ -39,13 +68,13 @@ export const MainNavigation: FC<IMainNavigationProps> = ({
     <StyledMainNavigation>
       <LeftMenu>
         <MenuHeader />
-        <ul>
+        <MenuItemList>
           {items.map((navItem, i) => (
-            <MenuItem key={`${i}${navItem.path}`}>
-              <Link to={navItem.path}>{navItem.label}</Link>
+            <MenuItem key={`${i}${navItem.path}`} to={navItem.path}>
+              {navItem.label}
             </MenuItem>
           ))}
-        </ul>
+        </MenuItemList>
       </LeftMenu>
       <div>{children}</div>
       <RightMenu></RightMenu>
