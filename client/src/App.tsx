@@ -8,9 +8,11 @@ import { Blog } from './views/Blog';
 import { useGetAllBlogPosts } from './hooks/useGetAllBlogPosts';
 import { Post } from './views/Post';
 import { MainNavigation } from './components/MainNavigation';
+import { Icon } from './components/Icon';
 import { Heading1 } from './styles/typography';
 
 import avatar from './assets/profile.jpg';
+import { Portfolio } from './views/Portfolio';
 
 const StyledApp = styled.div`
   max-height: 100vh;
@@ -55,8 +57,21 @@ const App = () => {
       <StyledApp>
         <MainNavigation
           items={[
-            { label: 'Introduction', path: '/' },
-            { label: 'Blog', path: '/blog' },
+            {
+              label: 'Hello',
+              path: '/',
+              icon: <Icon.Heart color={theme.accent.rainbow} />,
+            },
+            {
+              label: 'Stuff',
+              path: '/stuff',
+              icon: <Icon.Bulb color={theme.accent.rainbow} />,
+            },
+            {
+              label: 'Blog',
+              path: '/blog',
+              icon: <Icon.Coffee color={theme.accent.rainbow} />,
+            },
             ...posts.map(post => ({
               label: post.title,
               path: `/blog/${post.id}`,
@@ -71,6 +86,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Intro />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/stuff" element={<Portfolio />} />
               {posts.map(post => (
                 <Route
                   key={post.id}

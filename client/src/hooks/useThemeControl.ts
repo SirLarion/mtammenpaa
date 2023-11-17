@@ -18,13 +18,10 @@ const getInitialTheme = (): TThemeName | undefined => {
   return undefined;
 };
 
-type HSL = number[];
+type HSL = [number, number, number];
 
 const contrastHsl = (hsl1: HSL, hsl2: HSL) =>
-  contrast(
-    convert.hsl.hex(hsl1[0], hsl1[1], hsl1[2]),
-    convert.hsl.hex(hsl2[0], hsl2[1], hsl2[2])
-  );
+  contrast(convert.hsl.hex(hsl1), convert.hsl.hex(hsl2));
 
 const generateHighContrastColor = (bg: HSL) => {
   const h = bg[0];

@@ -13,6 +13,7 @@ export const Link = styled(BaseLink)`
 export const Heading1 = styled.h1`
   ${textBase}
   font-size: 4.5rem;
+  letter-spacing: -2px;
 `;
 
 export const Heading2 = styled.h2`

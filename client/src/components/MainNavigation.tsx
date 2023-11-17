@@ -7,6 +7,7 @@ import { Link } from '../styles/typography';
 interface INavItem {
   label: ReactNode;
   path: string;
+  icon?: ReactNode;
 }
 
 export interface IMainNavigationProps {
@@ -22,7 +23,8 @@ const StyledMainNavigation = styled.div`
 `;
 
 const MenuItem = styled(Link)`
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 1.25rem;
   font-weight: 800;
   color: ${p => p.theme.accent.rainbow} !important;
@@ -34,6 +36,10 @@ const MenuItem = styled(Link)`
   cursor: pointer;
   transition: background-color 100ms ease-in-out;
   ${noSelect}
+
+  svg {
+    margin: 0 0.5rem 0.25rem 0;
+  }
 
   &:hover {
     background-color: ${p => p.theme.accent.rainbowLight};
@@ -69,9 +75,10 @@ export const MainNavigation: FC<IMainNavigationProps> = ({
       <LeftMenu>
         <MenuHeader />
         <MenuItemList>
-          {items.map((navItem, i) => (
-            <MenuItem key={`${i}${navItem.path}`} to={navItem.path}>
-              {navItem.label}
+          {items.map(({ label, path, icon }, i) => (
+            <MenuItem key={`${i}${path}`} to={path}>
+              {icon && icon}
+              {label}
             </MenuItem>
           ))}
         </MenuItemList>
