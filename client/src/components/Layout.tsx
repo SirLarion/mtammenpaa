@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 
+import { SMALL_SCREEN_PX } from '../constants';
+import { LARGE, REGULAR } from '../styles/theme';
+
 const View = styled.div`
-  @media (max-width: 499px) {
-    width: 100vw;
-    padding: 1.5rem;
+  @media (max-width: ${SMALL_SCREEN_PX}px) {
+    width: 98vw;
+    padding: ${LARGE};
   }
-  @media (min-width: 500px) {
-    width: 72vw;
-    padding: 3rem;
-  }
+  width: 72vw;
+  padding: 3rem;
   min-height: 110vh;
-  border-radius: 1rem;
-  background-color: ${p => p.theme.background.primary};
+  border-radius: ${REGULAR};
+  background-color: ${p => p.theme.background.mono};
 `;
 
 export const Layout = { View };

@@ -1,19 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 
-import { noSelect } from '../styles/common';
-import { Link } from '../styles/typography';
-
-interface INavItem {
-  label: ReactNode;
-  path: string;
-  icon?: ReactNode;
-}
-
-export interface IMainNavigationProps {
-  items: INavItem[];
-  children: ReactNode;
-}
+import { REGULAR, TINY } from '../../styles/theme';
+import { BaseMenuItem, INavCommonProps } from './common';
 
 const StyledMainNavigation = styled.div`
   width: 100vw;
@@ -22,28 +11,9 @@ const StyledMainNavigation = styled.div`
   justify-content: space-between;
 `;
 
-const MenuItem = styled(Link)`
-  display: flex;
-  align-items: center;
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: ${p => p.theme.accent.rainbow} !important;
-  text-decoration: none;
-  background-color: ${p => p.theme.background.rainbow};
-  padding: 1rem;
-  border-radius: 0.25rem;
-  border-bottom: 0.25rem solid ${p => p.theme.accent.rainbowLight};
-  cursor: pointer;
-  transition: background-color 100ms ease-in-out;
-  ${noSelect}
-
-  svg {
-    margin: 0 0.5rem 0.25rem 0;
-  }
-
-  &:hover {
-    background-color: ${p => p.theme.accent.rainbowLight};
-  }
+const MenuItem = styled(BaseMenuItem)`
+  border-bottom: ${TINY} solid ${p => p.theme.accent.rainbowLight};
+  padding: ${REGULAR};
 `;
 
 const LeftMenu = styled.nav`
@@ -66,10 +36,11 @@ const MenuItemList = styled.ul`
   }
 `;
 
-export const MainNavigation: FC<IMainNavigationProps> = ({
-  items,
-  children,
-}) => {
+export interface IDesktopNavProps extends INavCommonProps {
+  children: ReactNode;
+}
+
+export const DesktopNav: FC<IDesktopNavProps> = ({ items, children }) => {
   return (
     <StyledMainNavigation>
       <LeftMenu>

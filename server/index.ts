@@ -17,4 +17,5 @@ new Elysia()
     Bun.file(`blog/${params.postId}/post.html`)
   )
   .get('/', () => Bun.file('public/index.html'))
+  .get('/blog/:id', () => Bun.file('public/index.html'))
   .listen(PORT, () => console.log(`🚀 Listening at localhost:${PORT}`));
