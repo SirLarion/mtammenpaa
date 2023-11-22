@@ -1,27 +1,21 @@
 export type TThemeName = 'light' | 'dark';
 export type TTheme = Record<string, Record<string, string>>;
 
+export const TINY = '0.25rem';
+export const SMALL = '0.5rem';
+export const REGULAR = '1rem';
+export const LARGE = '1.5rem';
+export const HUGE = '2rem';
+
 const light: TTheme = {
   foreground: {
-    primary: '#1b1b1b',
-  },
-  background: {
-    primary: '#FBFBFA',
-    secondary: '#EEEEEC',
+    primary: '#1d1d1d',
   },
 };
 
 const dark: TTheme = {
   foreground: {
-    primary: '#DDDDDF',
-  },
-  background: {
-    primary: '#050e19',
-    secondary: '#0d131c',
-  },
-  accent: {
-    navy: '#101654',
-    red: '#c00',
+    primary: '#f6f6f6',
   },
 };
 

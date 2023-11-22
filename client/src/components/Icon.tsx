@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { HomeSimpleDoor } from 'iconoir-react';
+
 import { theme } from '../styles/theme';
 
 const StyledIcon = styled.svg``;
@@ -8,7 +10,15 @@ interface IIconProps {
   color?: string;
 }
 
-const Heart: FC<IIconProps> = ({ color = '#050e19', ...rest }) => (
+const Home: FC<IIconProps> = ({
+  color = theme.light.foreground.primary,
+  ...rest
+}) => <HomeSimpleDoor width={24} height={24} color={color} {...rest} />;
+
+const Heart: FC<IIconProps> = ({
+  color = theme.light.foreground.primary,
+  ...rest
+}) => (
   <StyledIcon
     width="24"
     height="24"
@@ -27,13 +37,17 @@ const Heart: FC<IIconProps> = ({ color = '#050e19', ...rest }) => (
   </StyledIcon>
 );
 
-const Bulb: FC<IIconProps> = ({ color = '#050e19', ...rest }) => (
+const Bulb: FC<IIconProps> = ({
+  color = theme.light.foreground.primary,
+  ...rest
+}) => (
   <StyledIcon
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    {...rest}
   >
     <path
       d="M9 18H15"
@@ -59,13 +73,17 @@ const Bulb: FC<IIconProps> = ({ color = '#050e19', ...rest }) => (
   </StyledIcon>
 );
 
-const Coffee: FC<IIconProps> = ({ color = '#050e19', ...rest }) => (
+const Coffee: FC<IIconProps> = ({
+  color = theme.light.foreground.primary,
+  ...rest
+}) => (
   <svg
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    {...rest}
   >
     <path
       d="M17 11.6V15C17 18.3137 14.3137 21 11 21H9C5.68629 21 3 18.3137 3 15V11.6C3 11.2686 3.26863 11 3.6 11H16.4C16.7314 11 17 11.2686 17 11.6Z"
@@ -102,4 +120,5 @@ export const Icon = {
   Bulb,
   Coffee,
   Heart,
+  Home,
 };
