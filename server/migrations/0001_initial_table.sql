@@ -1,0 +1,9 @@
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY,
+    path TEXT NOT NULL,
+    endpoint TEXT NOT NULL,
+    tags TEXT NOT NULL,
+    preview BLOB,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

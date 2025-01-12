@@ -1,0 +1,5 @@
+default:
+  #!/usr/bin/env bash
+  for file in *.md; do 
+    pandoc $file -o html/"${file%.*}.html" 
+  done

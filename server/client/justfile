@@ -1,0 +1,8 @@
+default:
+  #!/usr/bin/env bash
+  cat dependencies | while read dep 
+  do
+    read file url <<< "$dep"
+    curl -o build/$file $url
+  done
+

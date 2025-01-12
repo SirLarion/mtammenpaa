@@ -1,0 +1,6 @@
+default:
+  just client/
+  cargo build --release
+
+dev:
+  cargo run

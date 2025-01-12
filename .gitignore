@@ -86,6 +86,7 @@ dist
 .cache/
 
 server/public/
+server/target/
 
 # vuepress build output
 .vuepress/dist

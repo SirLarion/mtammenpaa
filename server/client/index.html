@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <!-- Javascript -->
+    <script src="/build/htmx.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/global.css" />
+
+    <title>Miska Tammenpää</title>
+  </head>
+  <body>
+    <main>
+      <h1>Wassa</h1>
+      <div hx-get="/query-posts" hx-trigger="click" hx-swap="outerHTML">
+        Clicky
+      </div>
+      <h2>Jaboudi</h2>
+    </main>
+  </body>
+</html>
