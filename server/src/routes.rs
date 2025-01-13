@@ -1,10 +1,17 @@
 use actix_files::NamedFile;
 use actix_web::{get, web, HttpRequest, HttpResponse};
+use askama::Template;
 
 use crate::{
     error::AppError,
     types::{AppCtx, Post},
 };
+
+#[derive(Template)]
+#[template(path = "preview.html")]
+struct PreviewTemplate {
+    posts: Vec<String>,
+}
 
 #[get("/")]
 pub async fn index(req: HttpRequest) -> Result<HttpResponse, AppError> {
@@ -23,10 +30,10 @@ pub async fn query_posts(
         .fetch_all(&ctx.db_pool)
         .await?;
 
-    Ok(HttpResponse::Ok().body(
-        posts
-            .into_iter()
-            .map(|p| p.endpoint)
-            .fold(String::new(), |acc, curr| acc + &curr),
-    ))
+    Ok(HttpResponse::Ok().body(web::Bytes::from_owner(
+        PreviewTemplate {
+            posts: posts.into_iter().map(|p| p.endpoint).collect(),
+        }
+        .render()?,
+    )))
 }
