@@ -1,3 +1,4 @@
+use actix_files::NamedFile;
 use actix_web::{get, web, HttpRequest, HttpResponse};
 use askama::Template;
 
@@ -27,6 +28,12 @@ pub async fn index(_req: HttpRequest) -> Result<HttpResponse, AppError> {
         }
         .render()?,
     )))
+}
+
+#[get("/about")]
+pub async fn about(req: HttpRequest) -> Result<HttpResponse, AppError> {
+    let file = NamedFile::open("./client/build/About/content.html")?;
+    Ok(file.into_response(&req))
 }
 
 #[get("/query-posts")]

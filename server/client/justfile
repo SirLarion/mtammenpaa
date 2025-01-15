@@ -1,5 +1,6 @@
 default:
   #!/usr/bin/env bash
+  mkdir build > /dev/null 2>&1 || true
   cat dependencies | while read dep 
   do
     read file url <<< "$dep"

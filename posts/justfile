@@ -1,5 +1,6 @@
 default:
   #!/usr/bin/env bash
-  for file in *.md; do 
-    pandoc $file -o html/"${file%.*}.html" 
+  for dir in *; do 
+    [[ -d $dir ]] && pandoc $dir/content.md -o $dir/content.html
   done
+  exit 0

@@ -1,5 +1,10 @@
 /* Useful global CSS styles */
 
+@font-face {
+  font-family: "Oak Sans";
+  src: url(./assets/OakSans-ExtraBold.woff2) format("woff2");
+}
+
 /* Use a more-intuitive box-sizing model */
 *,
 *::before,
@@ -34,12 +39,6 @@ body {
 
 body {
   scrollbar-width: none;
-  background-color: var(--bg-rainbow);
-}
-
-h1 {
-  font-family: "monospace";
-  color: var(--fg-rainbow);
 }
 
 body::-webkit-scrollbar {

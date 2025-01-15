@@ -24,8 +24,9 @@ async fn main() -> Result<(), AppError> {
                 db_pool: pool.clone(),
             }))
             .service(routes::index)
+            .service(routes::about)
             .service(routes::query_posts)
-            .service(Files::new("/", "./client").use_last_modified(true))
+            .service(Files::new("/", "./client"))
     })
     .bind((ip, port))?;
 

@@ -11,14 +11,42 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/global.css" />
     {{ css_vars }}
+    <style>
+      html {
+        background-color: var(--bg-rainbow);
+      }
+      main {
+        padding: 1.5rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Oak Sans";
+        text-transform: uppercase;
+        color: var(--fg-rainbow);
+      }
+
+      #main-title {
+        max-width: min-content;
+        line-height: 1;
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        padding-left: 1rem;
+
+        @media (min-width: 620px) {
+          font-size: 4.5rem;
+          padding-left: 2rem;
+        }
+      }
+    </style>
     <title>Miska Tammenpää</title>
   </head>
   <body>
     <main>
-      <h1>Wassa</h1>
-      <div hx-get="/query-posts" hx-trigger="click" hx-swap="outerHTML">
-        Clicky
-      </div>
+      <h1 id="main-title">Miska Larion Tammenpää</h1>
+      <div hx-get="/about" hx-trigger="click" hx-swap="outerHTML">Flicky</div>
       <h2>Jaboudi</h2>
     </main>
   </body>

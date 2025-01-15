@@ -85,6 +85,7 @@ dist
 # Gatsby files
 .cache/
 
+*build/
 server/public/
 server/target/
 
