@@ -23,3 +23,11 @@ pub struct Post {
     // tags: Option<Vec<Tag>>,
     pub preview: Option<Vec<u8>>,
 }
+
+pub struct ClientColors {
+    pub bg_rainbow: String,
+    pub bg_mono: String,
+    pub bg_monostrong: String,
+    pub fg_rainbow: String,
+    pub fg_rainbowlight: String,
+}

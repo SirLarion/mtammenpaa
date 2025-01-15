@@ -1,11 +1,17 @@
-use actix_files::NamedFile;
 use actix_web::{get, web, HttpRequest, HttpResponse};
 use askama::Template;
 
 use crate::{
     error::AppError,
     types::{AppCtx, Post},
+    util::create_generated_css_variables,
 };
+
+#[derive(Template)]
+#[template(path = "index.html", escape = "none")]
+struct CssVarTemplate {
+    css_vars: String,
+}
 
 #[derive(Template)]
 #[template(path = "preview.html")]
@@ -14,9 +20,13 @@ struct PreviewTemplate {
 }
 
 #[get("/")]
-pub async fn index(req: HttpRequest) -> Result<HttpResponse, AppError> {
-    let file = NamedFile::open("./client/index.html")?;
-    Ok(file.into_response(&req))
+pub async fn index(_req: HttpRequest) -> Result<HttpResponse, AppError> {
+    Ok(HttpResponse::Ok().body(web::Bytes::from_owner(
+        CssVarTemplate {
+            css_vars: create_generated_css_variables(),
+        }
+        .render()?,
+    )))
 }
 
 #[get("/query-posts")]
