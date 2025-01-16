@@ -28,11 +28,11 @@ pub enum AppError {
     MigrationError(#[from] sqlx::migrate::MigrateError),
 
     #[error(transparent)]
-    TemplateError(#[from] askama::Error), // #[error("executing command failed: {0}")]
-                                          // CmdError(String),
-                                          //
-                                          // #[error("running operation for service failed: {0}")]
-                                          // ServiceError(String),
+    TemplateError(#[from] minijinja::Error), // #[error("executing command failed: {0}")]
+                                             // CmdError(String),
+                                             //
+                                             // #[error("running operation for service failed: {0}")]
+                                             // ServiceError(String),
 }
 
 impl ResponseError for AppError {

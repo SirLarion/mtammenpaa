@@ -1,9 +1,12 @@
 use dotenv::dotenv;
+use minijinja::{path_loader, AutoEscape, Environment};
 use palette::{color_difference::Wcag21RelativeContrast, FromColor, Hsl, Srgb};
 use rand::Rng;
 use std::env;
 
 use crate::{error::AppError, types::ClientColors};
+
+const NOESCAPE_TEMPLATES: [&str; 2] = ["main.html", "post.html"];
 
 pub fn load_env() -> Result<(String, u16), AppError> {
     dotenv().ok();
@@ -11,6 +14,19 @@ pub fn load_env() -> Result<(String, u16), AppError> {
     let port: u16 = env::var("PORT")?.parse()?;
 
     Ok((ip, port))
+}
+
+pub fn create_jinja_env() -> Environment<'static> {
+    let mut env = Environment::new();
+    env.set_loader(path_loader("templates"));
+    env.set_auto_escape_callback(|name| {
+        if NOESCAPE_TEMPLATES.contains(&name) {
+            AutoEscape::None
+        } else {
+            AutoEscape::Html
+        }
+    });
+    env
 }
 
 fn has_contrast(hsl1: Hsl, hsl2: Hsl) -> bool {
@@ -68,12 +84,24 @@ fn get_generated_colors(t: &str) -> ClientColors {
             s,
             if is_light { 90.0 } else { 20.0 }
         ),
-        fg_rainbow: format!("hsl({}, {}%, {}%)", h, hcs, hcl),
-        fg_rainbowlight: format!(
+        bg_rainbowlight: format!(
             "hsl({}, {}%, {}%)",
             h,
             s,
             l + if is_light { -5.0 } else { 5.0 }
+        ),
+        fg_rainbow: format!("hsl({}, {}%, {}%)", h, hcs, hcl),
+        fg_rainbowdark: format!(
+            "hsl({}, {}%, {}%)",
+            h,
+            hcs,
+            hcl + if is_light { -15.0 } else { 15.0 }
+        ),
+        fg_rainbowreverse: format!(
+            "hsl({}, {}%, {}%)",
+            (h + 180.0) % 360.0,
+            hcs,
+            hcl + if is_light { -15.0 } else { 15.0 }
         ),
     }
 }
@@ -83,8 +111,10 @@ pub fn create_generated_css_variables() -> String {
         bg_rainbow,
         bg_mono,
         bg_monostrong,
+        bg_rainbowlight,
         fg_rainbow,
-        fg_rainbowlight,
+        fg_rainbowdark,
+        fg_rainbowreverse,
     } = get_generated_colors("light");
 
     format!(
@@ -93,8 +123,10 @@ pub fn create_generated_css_variables() -> String {
                 --bg-rainbow: {bg_rainbow};
                 --bg-mono: {bg_mono};
                 --bg-mono-strong: {bg_monostrong};
+                --bg-rainbow-light: {bg_rainbowlight};
                 --fg-rainbow: {fg_rainbow};
-                --fg-rainbow-light: {fg_rainbowlight};
+                --fg-rainbow-dark: {fg_rainbowdark};
+                --fg-rainbow-reverse: {fg_rainbowreverse};
             }}
         </style>"#
     )

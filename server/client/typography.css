@@ -1,0 +1,62 @@
+/* Generic typography rules */
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Oak Sans";
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+p,
+div {
+  font-family: "Oak Sans";
+}
+
+span.htmx-a,
+a {
+  font-family: "Oak Sans";
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fg-rainbow-reverse);
+  }
+}
+
+code {
+  font-family: "JetBrains Mono";
+}
+
+#main-title {
+  max-width: min-content;
+  line-height: 1;
+  font-size: 2.5rem;
+}
+
+/* Overrides for wide screen only */
+@media (min-width: 720px) {
+  #main-title {
+    font-size: 4.5rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+  }
+  h2 {
+    font-size: 3rem;
+  }
+  h3 {
+    font-size: 2rem;
+  }
+  h4 {
+    font-size: 1.5rem;
+  }
+
+  p,
+  span {
+    font-size: 1.5rem;
+  }
+}

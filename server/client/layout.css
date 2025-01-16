@@ -1,0 +1,100 @@
+/* Generic layout rules */
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 2rem;
+}
+
+img {
+  width: 100vw;
+  max-height: 35vh;
+  object-fit: cover;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 1.5rem;
+}
+p {
+  margin: 0 1rem 1rem 1rem;
+}
+
+#main-title {
+  padding-left: 2.5rem;
+}
+
+code {
+  padding: 0 0.4rem;
+  border-radius: 0.2rem;
+}
+
+#links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+hr {
+  width: 70%;
+  margin: 3rem auto;
+}
+
+/* Overrides for wide screen only */
+
+@media (min-width: 720px) {
+  body {
+    padding: 1.5rem 0;
+  }
+  p:has(> img) {
+    margin: 3rem auto;
+    max-width: 720px;
+  }
+  img {
+    max-height: 60vh;
+    border-radius: 0.5rem;
+  }
+}
+
+@media (min-width: 940px) {
+  body {
+    margin: 0 14vw;
+  }
+
+  main {
+    padding: 0 2rem;
+  }
+}
+
+/* Overrides for narrow screen only */
+
+@media (max-width: 720px) {
+  p:has(> img) {
+    margin: 0;
+    margin-bottom: 1rem;
+
+    span {
+      margin-left: 0.5rem;
+    }
+  }
+}

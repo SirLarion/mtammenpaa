@@ -2,6 +2,7 @@ use sqlx::{FromRow, SqlitePool, Type};
 
 pub struct AppCtx {
     pub db_pool: SqlitePool,
+    pub jinja: minijinja::Environment<'static>,
 }
 
 #[derive(Debug)]
@@ -28,6 +29,8 @@ pub struct ClientColors {
     pub bg_rainbow: String,
     pub bg_mono: String,
     pub bg_monostrong: String,
+    pub bg_rainbowlight: String,
     pub fg_rainbow: String,
-    pub fg_rainbowlight: String,
+    pub fg_rainbowdark: String,
+    pub fg_rainbowreverse: String,
 }

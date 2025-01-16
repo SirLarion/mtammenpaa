@@ -19,9 +19,11 @@ async fn main() -> Result<(), AppError> {
     db::run_migrations(&pool).await?;
 
     let server = HttpServer::new(move || {
+        let jinja_env = create_jinja_env();
         App::new()
             .app_data(web::Data::new(AppCtx {
                 db_pool: pool.clone(),
+                jinja: jinja_env,
             }))
             .service(routes::index)
             .service(routes::about)

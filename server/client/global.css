@@ -2,7 +2,13 @@
 
 @font-face {
   font-family: "Oak Sans";
-  src: url(./assets/OakSans-ExtraBold.woff2) format("woff2");
+  src: url(./assets/OakSansVF.woff2) format("woff2");
+  font-weight: 1 1000;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url(./assets/JetBrainsMono-SemiBold.woff2) format("woff2");
 }
 
 /* Use a more-intuitive box-sizing model */
@@ -32,8 +38,7 @@ dd {
 }
 
 /* Allow percentage-based heights in the application */
-html,
-body {
+html {
   height: 100%;
 }
 
