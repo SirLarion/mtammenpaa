@@ -26,8 +26,10 @@ async fn main() -> Result<(), AppError> {
                 jinja: jinja_env,
             }))
             .service(routes::index)
+            .service(routes::favicon)
             .service(routes::about)
             .service(routes::query_posts)
+            .service(routes::random_showcase)
             .service(Files::new("/", "./client"))
     })
     .bind((ip, port))?;

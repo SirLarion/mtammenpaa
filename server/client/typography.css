@@ -8,6 +8,7 @@ h4 {
   font-weight: 800;
 }
 
+img,
 p,
 div {
   font-family: "Oak Sans";
@@ -19,10 +20,13 @@ a {
   font-weight: 600;
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
-  cursor: pointer;
 
-  &:hover {
-    color: var(--fg-rainbow-reverse);
+  &:not(.active) {
+    cursor: pointer;
+  }
+
+  &.active {
+    text-decoration-line: none;
   }
 }
 
@@ -34,6 +38,10 @@ code {
   max-width: min-content;
   line-height: 1;
   font-size: 2.5rem;
+}
+
+#random-showcase > a {
+  font-size: 1.5rem;
 }
 
 /* Overrides for wide screen only */
@@ -55,8 +63,25 @@ code {
     font-size: 1.5rem;
   }
 
+  i,
   p,
   span {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+  }
+
+  nav {
+    a,
+    span.htmx-a {
+      font-size: 1.5rem;
+    }
+  }
+
+  #random-showcase {
+    & > a {
+      font-size: 2rem;
+    }
+    & > p {
+      font-size: 1rem;
+    }
   }
 }

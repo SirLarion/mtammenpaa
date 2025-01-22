@@ -1,6 +1,6 @@
 <img src="./build/About/small-miska.webp" alt="Tiny, 9-year-old version of me (Miska). I am sleeping on a
 bench at a train station due to a fever. I have a hat with a reflector in the
-shape of a cat's head over my eyes." />
+shape of a cat's head over my eyes." width="720" height="542" />
 
 ## Moi!
 
@@ -16,7 +16,8 @@ have the remains of a terrible vegan-not-designed-to-be-vegan pizza grasped
 between my thumb, index finger and middle finger. In fact, you can see then name
 of the pizza place behind on a sign, but I'm not the type of person to out them
 in the alt-text of an image. I am squinting my eyes away from the sun that is
-shining very brightly at around 11pm (hence the midnight sun)." />
+shining very brightly at around 11pm (hence the midnight sun)." width="720"
+height="479" />
 <span>*A more timely picture.*</span>
 
 I study computer science at Aalto University in Finland, but really I study

@@ -6,6 +6,11 @@ body {
   min-height: 100vh;
 }
 
+main {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
 nav {
   display: flex;
   justify-content: center;
@@ -27,25 +32,54 @@ img {
   width: 100vw;
   max-height: 35vh;
   object-fit: cover;
+
+  &::before {
+    padding: 1rem;
+  }
 }
 
 h1,
 h2,
 h3,
-h4 {
-  margin: 1.5rem;
+h4,
+p {
+  margin: 1rem;
 }
 p {
-  margin: 0 1rem 1rem 1rem;
+  margin-top: 0;
 }
 
 #main-title {
-  padding-left: 2.5rem;
+  padding-left: 0.5rem;
+  margin-left: 3rem;
 }
 
 code {
   padding: 0 0.4rem;
   border-radius: 0.2rem;
+}
+
+section#content:has(#post) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#random-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  & > img {
+    min-height: 20vh;
+  }
+  & > a {
+    margin: 0 1rem;
+  }
+}
+
+#post {
+  display: flex;
+  flex-direction: column;
 }
 
 #links {
@@ -57,7 +91,7 @@ code {
 
 hr {
   width: 70%;
-  margin: 3rem auto;
+  margin: 2rem auto;
 }
 
 /* Overrides for wide screen only */
@@ -66,23 +100,33 @@ hr {
   body {
     padding: 1.5rem 0;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  #random-showcase > a {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   p:has(> img) {
-    margin: 3rem auto;
-    max-width: 720px;
+    margin: 4rem 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
+
   img {
-    max-height: 60vh;
     border-radius: 0.5rem;
-  }
-}
-
-@media (min-width: 940px) {
-  body {
-    margin: 0 14vw;
+    max-height: 60vh;
   }
 
-  main {
-    padding: 0 2rem;
+  #main-title {
+    padding-left: 0.5rem;
+    margin-left: 4rem;
   }
 }
 
@@ -90,11 +134,14 @@ hr {
 
 @media (max-width: 720px) {
   p:has(> img) {
-    margin: 0;
-    margin-bottom: 1rem;
+    margin: 2rem 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
 
     span {
-      margin-left: 0.5rem;
+      margin-left: 0.75rem;
     }
   }
 }

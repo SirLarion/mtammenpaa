@@ -1217,6 +1217,7 @@ dependencies = [
  "derive_more",
  "dotenv",
  "listenfd",
+ "mime",
  "minijinja",
  "palette",
  "rand",

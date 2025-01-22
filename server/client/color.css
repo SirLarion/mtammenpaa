@@ -1,5 +1,31 @@
 /* Generic color rules */
-html {
+
+/* Set color variables depending on theme */
+:root {
+  --bg-rainbow: var(--l-bg-rainbow);
+  --bg-mono: var(--l-bg-mono);
+  --bg-mono-strong: var(--l-bg-mono-strong);
+  --bg-rainbow-light: var(--l-bg-rainbow-light);
+  --fg-rainbow: var(--l-fg-rainbow);
+  --fg-rainbow-dark: var(--l-fg-rainbow-dark);
+  --fg-rainbow-reverse: var(--l-fg-rainbow-reverse);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-rainbow: var(--d-bg-rainbow);
+    --bg-mono: var(--d-bg-mono);
+    --bg-mono-strong: var(--d-bg-mono-strong);
+    --bg-rainbow-light: var(--d-bg-rainbow-light);
+    --fg-rainbow: var(--d-fg-rainbow);
+    --fg-rainbow-dark: var(--d-fg-rainbow-dark);
+    --fg-rainbow-reverse: var(--d-fg-rainbow-reverse);
+  }
+}
+
+html,
+body,
+header {
   background-color: var(--bg-rainbow);
 }
 
@@ -7,7 +33,8 @@ body * {
   color: var(--fg-rainbow);
 }
 
-code {
+code,
+img {
   background-color: var(--bg-rainbow-light);
 }
 
@@ -16,12 +43,9 @@ hr {
   opacity: 0.3;
 }
 
-/* Overrides for wide screen only */
-@media (min-width: 720px) {
-  html {
-    background-color: var(--bg-rainbow-light);
-  }
-  body {
-    background-color: var(--bg-rainbow);
+span.htmx-a,
+a {
+  &:not(.active):hover {
+    color: var(--fg-rainbow-reverse);
   }
 }

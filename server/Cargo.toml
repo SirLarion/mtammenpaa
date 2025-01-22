@@ -11,6 +11,7 @@ actix-web = "4.3.1"
 derive_more = "0.99.17"
 dotenv = "0.15.0"
 listenfd = "1.0.1"
+mime = "0.3.17"
 minijinja = { version = "2.6.0", features = ["loader", "multi_template"] }
 palette = "0.7.6"
 rand = "0.8.5"

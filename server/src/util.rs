@@ -1,12 +1,11 @@
 use dotenv::dotenv;
 use minijinja::{path_loader, AutoEscape, Environment};
 use palette::{color_difference::Wcag21RelativeContrast, FromColor, Hsl, Srgb};
-use rand::Rng;
 use std::env;
 
 use crate::{error::AppError, types::ClientColors};
 
-const NOESCAPE_TEMPLATES: [&str; 2] = ["main.html", "post.html"];
+const NOESCAPE_TEMPLATES: [&str; 3] = ["main.html", "post.html", "showcase.html"];
 
 pub fn load_env() -> Result<(String, u16), AppError> {
     dotenv().ok();
@@ -55,11 +54,8 @@ fn generate_high_contrast_color(bg: Hsl, l_delta: f32) -> Hsl {
     Hsl::new_srgb(h, s, l)
 }
 
-fn get_generated_colors(t: &str) -> ClientColors {
+fn get_themed_gen_colors(t: &str, h: f32) -> ClientColors {
     let is_light = t == "light";
-    let mut rng = rand::thread_rng();
-
-    let h: f32 = rng.gen_range(0.0..360.0);
     let s: f32 = 0.35;
     let l: f32 = if is_light { 0.85 } else { 0.15 };
 
@@ -106,7 +102,15 @@ fn get_generated_colors(t: &str) -> ClientColors {
     }
 }
 
-pub fn create_generated_css_variables() -> String {
+pub fn get_generated_colors(h: f32) -> (ClientColors, ClientColors) {
+    let light = get_themed_gen_colors("light", h);
+    let dark = get_themed_gen_colors("dark", h);
+
+    (light, dark)
+}
+
+fn create_themed_variables(t: &str, colors: ClientColors) -> String {
+    let prefix = if t == "light" { "l" } else { "d" };
     let ClientColors {
         bg_rainbow,
         bg_mono,
@@ -115,18 +119,31 @@ pub fn create_generated_css_variables() -> String {
         fg_rainbow,
         fg_rainbowdark,
         fg_rainbowreverse,
-    } = get_generated_colors("light");
+    } = colors;
+
+    format!(
+        r#"                
+        --{prefix}-bg-rainbow: {bg_rainbow};
+        --{prefix}-bg-mono: {bg_mono};
+        --{prefix}-bg-mono-strong: {bg_monostrong};
+        --{prefix}-bg-rainbow-light: {bg_rainbowlight};
+        --{prefix}-fg-rainbow: {fg_rainbow};
+        --{prefix}-fg-rainbow-dark: {fg_rainbowdark};
+        --{prefix}-fg-rainbow-reverse: {fg_rainbowreverse};
+        "#
+    )
+}
+
+pub fn create_generated_css_variables(h: f32) -> String {
+    let (light, dark) = get_generated_colors(h);
+    let light_vars = create_themed_variables("light", light);
+    let dark_vars = create_themed_variables("dark", dark);
 
     format!(
         r#"<style>
             :root {{
-                --bg-rainbow: {bg_rainbow};
-                --bg-mono: {bg_mono};
-                --bg-mono-strong: {bg_monostrong};
-                --bg-rainbow-light: {bg_rainbowlight};
-                --fg-rainbow: {fg_rainbow};
-                --fg-rainbow-dark: {fg_rainbowdark};
-                --fg-rainbow-reverse: {fg_rainbowreverse};
+                {light_vars}
+                {dark_vars}
             }}
         </style>"#
     )

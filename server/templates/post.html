@@ -1,2 +1,23 @@
 {% extends "main.html" %}
-<div>{% block content %} {{ post }} {% endblock %}</div>
+
+{% block content %}
+<title>{{ title }}</title>
+<nav>
+  <span class="htmx-a" 
+    hx-get="/" 
+    hx-trigger="click" 
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-push-url="true"
+  >
+    front
+  </span>
+  <span>/</span>
+  <span class="htmx-a active" >
+    about
+  </span>
+</nav>
+<div id="post">
+  {{ post }} 
+</div>
+{% endblock %}
