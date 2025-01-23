@@ -9,14 +9,15 @@ h4 {
 }
 
 img,
+span,
 p,
+a,
 div {
   font-family: "Oak Sans";
 }
 
 span.htmx-a,
 a {
-  font-family: "Oak Sans";
   font-weight: 600;
   text-decoration-line: underline;
   text-decoration-thickness: 2px;

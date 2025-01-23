@@ -2,5 +2,8 @@ default:
   just client/
   cargo build --release
 
+clean:
+  cargo clean
+
 dev:
   cargo run

@@ -28,8 +28,9 @@ async fn main() -> Result<(), AppError> {
             .service(routes::index)
             .service(routes::favicon)
             .service(routes::about)
-            .service(routes::query_posts)
+            .service(routes::posts)
             .service(routes::random_showcase)
+            .service(routes::get_post)
             .service(Files::new("/", "./client"))
     })
     .bind((ip, port))?;

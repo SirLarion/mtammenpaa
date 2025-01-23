@@ -34,7 +34,8 @@ body * {
 }
 
 code,
-img {
+img,
+li#preview {
   background-color: var(--bg-rainbow-light);
 }
 

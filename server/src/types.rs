@@ -1,3 +1,4 @@
+use serde::Serialize;
 use sqlx::{FromRow, SqlitePool, Type};
 
 pub struct AppCtx {
@@ -16,13 +17,24 @@ pub enum Tag {
     SysAdmin,
 }
 
+// #[derive(Debug, FromRow, Type)]
+// pub struct Post {
+//     id: u32,
+//     pub path: String,
+//     pub endpoint: String,
+//     // tags: Option<Vec<Tag>>,
+// }
+
 #[derive(Debug, FromRow, Type)]
-pub struct Post {
-    id: u32,
-    pub path: String,
+pub struct PostMeta {
     pub endpoint: String,
-    // tags: Option<Vec<Tag>>,
-    pub preview: Option<Vec<u8>>,
+    pub path: String,
+}
+
+#[derive(Debug, FromRow, Type, Serialize)]
+pub struct PostPreview {
+    pub endpoint: String,
+    pub preview: String,
 }
 
 pub struct ClientColors {
@@ -33,4 +45,11 @@ pub struct ClientColors {
     pub fg_rainbow: String,
     pub fg_rainbowdark: String,
     pub fg_rainbowreverse: String,
+}
+
+#[derive(Clone, Serialize)]
+pub struct NavItem {
+    pub name: &'static str,
+    pub endpoint: &'static str,
+    pub active: bool,
 }

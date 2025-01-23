@@ -6,11 +6,6 @@ body {
   min-height: 100vh;
 }
 
-main {
-  max-width: 52rem;
-  margin: 0 auto;
-}
-
 nav {
   display: flex;
   justify-content: center;
@@ -59,16 +54,23 @@ code {
   border-radius: 0.2rem;
 }
 
-section#content:has(#post) {
+section#content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 80vh;
+
+  &:has(#post) {
+    max-width: 52rem;
+    margin: 0 auto;
+  }
 }
 
 #random-showcase {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  max-width: 40rem;
   & > img {
     min-height: 20vh;
   }
@@ -82,13 +84,48 @@ section#content:has(#post) {
   flex-direction: column;
 }
 
+ul.wrapping-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 0;
+  gap: 2rem;
+
+  & li {
+    list-style: none;
+  }
+}
+
+li#preview {
+  cursor: pointer;
+  padding-bottom: 0.75rem;
+
+  @media (min-width: 1072px) {
+    max-width: 30rem;
+    & > img,
+    & > picture {
+      height: 14rem;
+    }
+  }
+
+  & > :first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  & h4,
+  span {
+    display: block;
+    margin: 0;
+    padding: 0 0.75rem;
+  }
+}
+
 #links {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
-
 hr {
   width: 70%;
   margin: 2rem auto;
@@ -99,6 +136,10 @@ hr {
 @media (min-width: 720px) {
   body {
     padding: 1.5rem 0;
+  }
+
+  section#content {
+    padding: 2.5rem;
   }
 
   h1,
@@ -122,6 +163,10 @@ hr {
   img {
     border-radius: 0.5rem;
     max-height: 60vh;
+  }
+
+  li#preview {
+    border-radius: 0.5rem;
   }
 
   #main-title {

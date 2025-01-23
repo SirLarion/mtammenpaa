@@ -3,7 +3,6 @@ CREATE TABLE posts (
     path TEXT NOT NULL,
     endpoint TEXT NOT NULL,
     tags TEXT NOT NULL,
-    preview TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

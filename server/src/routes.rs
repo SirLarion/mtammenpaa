@@ -1,4 +1,4 @@
-use std::io::Read;
+use std::{fs, io::Read};
 
 use actix_files::NamedFile;
 use actix_web::{get, web, HttpRequest, HttpResponse};
@@ -8,8 +8,8 @@ use serde::Deserialize;
 
 use crate::{
     error::AppError,
-    types::{AppCtx, Post},
-    util::{create_generated_css_variables, get_generated_colors},
+    types::{AppCtx, PostMeta, PostPreview},
+    util::{build_nav, create_generated_css_variables, get_generated_colors},
 };
 
 fn is_htmx_req(req: &HttpRequest) -> bool {
@@ -42,13 +42,16 @@ pub async fn favicon(
 pub async fn index(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     let title = "mlt";
     let template = ctx.jinja.get_template("main.html")?;
+    let nav = build_nav(&ctx.jinja, "front")?;
+
     let out = if is_htmx_req(&req) {
         template
-            .eval_to_state(context! { title })?
+            .eval_to_state(context! { title, nav })?
             .render_block("content")?
     } else {
         let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-        template.render(context! {css_vars => create_generated_css_variables(hue), hue, title })?
+        template
+            .render(context! {css_vars => create_generated_css_variables(hue), hue, title, nav })?
     };
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
@@ -57,18 +60,20 @@ pub async fn index(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRespo
 pub async fn about(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     let file = NamedFile::open("./client/build/About/content.html")?;
     let template = ctx.jinja.get_template("post.html")?;
+    let nav = build_nav(&ctx.jinja, "about")?;
     let title = "About";
     let mut post = String::new();
     file.file().read_to_string(&mut post)?;
 
     let out = if is_htmx_req(&req) {
         template
-            .eval_to_state(context! { post, title })?
+            .eval_to_state(context! { post, title, nav })?
             .render_block("content")?
     } else {
         let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-        template
-            .render(context! {css_vars => create_generated_css_variables(hue), post, hue, title })?
+        template.render(
+            context! {css_vars => create_generated_css_variables(hue), post, hue, title, nav },
+        )?
     };
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
@@ -110,7 +115,7 @@ const SHOWCASE_ITEMS: [ShowcaseItem; 4] = [
         img_url: "https://git.tammenpaa.com/sirlarion/miniprojects/media/branch/main/libnet/img/spring_layout.png",
         img_alt: "A network graph displayed in a spherical form. It looks almost like an explosion with warm colors changing to indicate the in-degree of each node.",
         name: "libnet",
-        description: r#"A course project studying the network structure of Python dependencies in Github (as indicated by 'requirements.txt' files). This was partially motivated by the <a href="https://en.wikipedia.org/wiki/Npm_left-pad_incident" target="_blank" rel="noreferrer">left-pad incident</a> a while back. See <a href="https://xkcd.com/2347/" target="_blank" rel="noreferrer">xkcd#2347</a> for a very detailed depiction of what this project investigates."#
+        description: r#"A course project studying the network structure of Python dependencies in Github (as indicated by 'requirements.txt' files). This was partially motivated by the <a href="https://en.wikipedia.org/wiki/Npm_left-pad_incident" target="_blank" rel="noreferrer">left-pad incident</a> a while back. Relevant xkcd <a href="https://xkcd.com/2347/" target="_blank" rel="noreferrer">#2347</a>"#
     }
 ];
 
@@ -131,19 +136,73 @@ pub async fn random_showcase(ctx: web::Data<AppCtx>) -> Result<HttpResponse, App
     )))
 }
 
-#[get("/query-posts")]
-pub async fn query_posts(
-    _req: HttpRequest,
-    ctx: web::Data<AppCtx>,
-) -> Result<HttpResponse, AppError> {
+#[get("/posts")]
+pub async fn posts(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     ctx.db_pool.acquire().await?;
 
-    let posts_typed = sqlx::query_as::<_, Post>("SELECT id, path, endpoint, preview FROM posts;")
-        .fetch_all(&ctx.db_pool)
-        .await?;
+    let meta_posts = sqlx::query_as::<_, PostMeta>(
+        "SELECT endpoint, path FROM posts ORDER BY updated_at DESC LIMIT 10;",
+    )
+    .fetch_all(&ctx.db_pool)
+    .await?;
 
-    let posts: Vec<String> = posts_typed.into_iter().map(|p| p.endpoint).collect();
+    let posts = meta_posts
+        .into_iter()
+        .map(|post| {
+            let PostMeta { endpoint, path } = post;
+            let preview =
+                fs::read_to_string(format!("./client/build/{path}/preview.html").to_string())?;
+            Ok(PostPreview { endpoint, preview })
+        })
+        .collect::<Result<Vec<PostPreview>, AppError>>()?;
 
-    let template = ctx.jinja.get_template("preview.html")?;
-    Ok(HttpResponse::Ok().body(web::Bytes::from_owner(template.render(context! { posts })?)))
+    let (df_posts, posts): (Vec<_>, Vec<_>) = posts
+        .into_iter()
+        .partition(|p| p.endpoint.contains("digital-fabrication"));
+
+    let nav = build_nav(&ctx.jinja, "posts")?;
+
+    let template = ctx.jinja.get_template("previewList.html")?;
+
+    let out = if is_htmx_req(&req) {
+        template
+            .eval_to_state(context! { df_posts, posts, nav })?
+            .render_block("content")?
+    } else {
+        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
+        template.render(
+            context! {css_vars => create_generated_css_variables(hue), df_posts, posts, hue, nav },
+        )?
+    };
+
+    Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
+}
+
+#[get("/posts/{category}/{post_name}")]
+pub async fn get_post(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
+    ctx.db_pool.acquire().await?;
+
+    let PostMeta { path, .. } =
+        sqlx::query_as::<_, PostMeta>("SELECT endpoint, path FROM posts WHERE endpoint = $1;")
+            .bind(req.path())
+            .fetch_one(&ctx.db_pool)
+            .await?;
+
+    let post = fs::read_to_string(format!("./client/build/{path}/content.html"))?;
+
+    let template = ctx.jinja.get_template("post.html")?;
+    let nav = build_nav(&ctx.jinja, "none")?;
+    let title = req.path();
+
+    let out = if is_htmx_req(&req) {
+        template
+            .eval_to_state(context! { post, title, nav })?
+            .render_block("content")?
+    } else {
+        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
+        template.render(
+            context! {css_vars => create_generated_css_variables(hue), post, hue, title, nav },
+        )?
+    };
+    Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }

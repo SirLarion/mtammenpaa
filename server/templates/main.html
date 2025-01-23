@@ -50,47 +50,28 @@
     </header>
     <main>
       <section id="content">
-        {% block content %}
+        {% block content %} {{ nav }}
         <!-- Title changes dynamically based on the content block -->
         <!-- hence it should be here -->
         <title>{{ title }}</title>
-        <nav>
-          <span class="htmx-a active" hx-get="/"> front </span>
-          <span>/</span>
-          <span
-            class="htmx-a"
-            hx-get="/about"
-            hx-trigger="click"
-            hx-target="#content"
-            hx-swap="innerHTML"
-            hx-push-url="true"
-          >
-            about
-          </span>
-          <span>/</span>
-          <span
-            class="htmx-a"
-            hx-get="/query-posts"
-            hx-trigger="click"
-            hx-target="#content"
-            hx-swap="innerHTML"
-            hx-push-url="true"
-          >
-            posts
-          </span>
-        </nav>
-        <h2>Random showcase</h2>
-        <div
-          id="random-showcase"
-          hx-get="/random-showcase"
-          hx-trigger="load once"
-          hx-swap="outerHTML"
-        ></div>
 
-        <div id="latest-posts">
-          <h2>Latest posts</h2>
-          <div><p>Jabudeisson</p></div>
-        </div>
+        <ul class="wrapping-list">
+          <li>
+            <h2>Random showcase</h2>
+            <div
+              id="random-showcase"
+              hx-get="/random-showcase"
+              hx-trigger="load once"
+              hx-swap="outerHTML"
+            ></div>
+          </li>
+          <li>
+            <div id="latest-posts">
+              <h2>Latest posts</h2>
+              <div><p>Posty postersson</p></div>
+            </div>
+          </li>
+        </ul>
         {% endblock %}
       </section>
     </main>

@@ -1,11 +1,37 @@
 use dotenv::dotenv;
-use minijinja::{path_loader, AutoEscape, Environment};
+use minijinja::{context, path_loader, AutoEscape, Environment};
 use palette::{color_difference::Wcag21RelativeContrast, FromColor, Hsl, Srgb};
 use std::env;
 
-use crate::{error::AppError, types::ClientColors};
+use crate::{
+    error::AppError,
+    types::{ClientColors, NavItem},
+};
 
-const NOESCAPE_TEMPLATES: [&str; 3] = ["main.html", "post.html", "showcase.html"];
+const NOESCAPE_TEMPLATES: [&str; 4] = [
+    "main.html",
+    "post.html",
+    "showcase.html",
+    "previewList.html",
+];
+
+const NAV_ITEMS: [NavItem; 3] = [
+    NavItem {
+        name: "front",
+        endpoint: "/",
+        active: false,
+    },
+    NavItem {
+        name: "about",
+        endpoint: "/about",
+        active: false,
+    },
+    NavItem {
+        name: "posts",
+        endpoint: "/posts",
+        active: false,
+    },
+];
 
 pub fn load_env() -> Result<(String, u16), AppError> {
     dotenv().ok();
@@ -147,4 +173,20 @@ pub fn create_generated_css_variables(h: f32) -> String {
             }}
         </style>"#
     )
+}
+
+pub fn build_nav(jinja: &Environment, active_name: &str) -> Result<String, AppError> {
+    let template = jinja.get_template("nav.html")?;
+    Ok(template.render(context! {
+        nav_items => NAV_ITEMS
+            .iter()
+            .map(|i| {
+                let item = i.clone();
+                if item.name == active_name {
+                    NavItem { active: true, ..item }
+                } else {
+                    item
+                }
+            }).collect::<Vec<NavItem>>()
+    })?)
 }
