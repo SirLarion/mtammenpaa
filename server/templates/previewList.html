@@ -6,31 +6,37 @@
   <h2>Digital Fabrication</h2>
   <ul class="wrapping-list">
     {% for post in df_posts %}
-    <li
-      id="preview"
-      hx-get="{{ post.endpoint }}"
-      hx-trigger="click"
-      hx-target="#content"
-      hx-push-url="true"
-      hx-swap="innerHTML"
-    >
-      {{ post.preview }}
+    <li>
+      <a  
+        class="preview"
+        hx-get="{{ post.endpoint }}"
+        hx-trigger="click"
+        hx-target="#content"
+        hx-push-url="true"
+        hx-swap="innerHTML"
+        hx-boost
+      >
+        {{ post.preview }}
+      </a>
     </li>
     {% endfor %}
   </ul>
 </div>
 <ul class="wrapping-list">
   {% for post in posts %}
-  <li
-    id="preview"
-    hx-get="{{ post.endpoint }}"
-    hx-trigger="click"
-    hx-target="#content"
-    hx-push-url="true"
-    hx-swap="innerHTML"
-  >
-    {{ post.preview }}
-  </li>
+    <li>
+      <a
+        class="preview"
+        hx-get="{{ post.endpoint }}"
+        hx-trigger="click"
+        hx-target="#content"
+        hx-push-url="true"
+        hx-swap="innerHTML"
+        hx-boost
+      >
+        {{ post.preview }}
+      </a>
+    </li>
   {% endfor %}
 </ul>
 

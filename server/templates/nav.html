@@ -1,20 +1,18 @@
 <nav>
   {% for item in nav_items %}
-  <span
+  <a
     id="{{item.name}}"
     {% if item.active %}
-    class="htmx-a active" 
+    class="active" 
     hx-disable="true"
-    {% else %}
-    class="htmx-a"
     {% endif %}
+    hx-boost
     hx-get="{{ item.endpoint }}"
-    hx-trigger="click"
     hx-target="#content"
     hx-swap="innerHTML"
     hx-push-url="true"
   >
     {{ item.name }}
-  </span>
+  </a>
   {% endfor %}
 </nav>

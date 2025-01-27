@@ -29,7 +29,7 @@ async fn main() -> Result<(), AppError> {
             .service(routes::favicon)
             .service(routes::about)
             .service(routes::posts)
-            .service(routes::random_showcase)
+            .service(routes::showcase)
             .service(routes::get_post)
             .service(Files::new("/", "./client"))
     })

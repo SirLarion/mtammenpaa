@@ -1,6 +1,20 @@
 default:
   #!/usr/bin/env bash
+  shopt -s nullglob
+  (rm -r build > /dev/null 2>&1 || true) && mkdir build
   for dir in *; do 
-    [[ -d $dir ]] && pandoc $dir/content.md -o $dir/content.html
+    if [[ -d $dir && $dir != "build" ]]; then
+      mkdir build/$dir
+      cd $dir
+      pandoc content.md -o ../build/$dir/content.html
+      
+      for img in *.jpg *.JPG *.jpeg *.png *.webp; do
+        imgname=${img%.*}
+        magick $img -resize 960x960 ../build/$dir/$imgname.webp
+        magick $img -resize 480x480 ../build/$dir/$imgname-small.webp
+      done
+
+      cd -
+    fi
   done
   exit 0

@@ -1,3 +1,3 @@
 ## Digital Fabrication, week 1
 
-Dingleberry
+This week, coding action continued.

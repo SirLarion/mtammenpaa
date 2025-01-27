@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, SqlitePool, Type};
 
 pub struct AppCtx {
@@ -52,4 +52,20 @@ pub struct NavItem {
     pub name: &'static str,
     pub endpoint: &'static str,
     pub active: bool,
+}
+
+#[derive(Clone, FromRow, Type, Serialize, Deserialize)]
+pub struct PreviewMeta {
+    pub path: String,
+    pub img_urls: String,
+    pub img_alt: String,
+    pub display_name: String,
+    pub description: String,
+}
+
+#[derive(Clone, FromRow, Type, Serialize, Deserialize)]
+pub struct PreviewItem {
+    pub sources: String,
+    pub display_name: String,
+    pub description: String,
 }

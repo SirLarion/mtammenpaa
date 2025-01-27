@@ -1,0 +1,7 @@
+{
+  "path": "2025-df-web-documentation",
+  "img_urls": "code-dark.webp,code-light-small.webp,code-dark-small.webp,code-light.webp",
+  "img_alt": "Rust code displaying the implementation of a web server endpoint.",
+  "display_name": "Digital Fabrication Week #1",
+  "description": "Webdev time. Flavors of Rust, HTMX, Sqlite with exorbitant amounts of CSS on top."
+}

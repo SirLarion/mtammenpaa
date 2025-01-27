@@ -28,11 +28,12 @@
     <link rel="stylesheet" href="/typography.css" />
     <link rel="stylesheet" href="/layout.css" />
     <link rel="stylesheet" href="/color.css" />
+    <link rel="stylesheet" href="/code.css" />
 
     <!-- Javascript -->
     <script src="/build/htmx.min.js" defer></script>
 
-    <!-- Dark mode favicon -->
+    <!-- Dark mode favicon, VERY important -->
     <script>
       if (
         window.matchMedia &&
@@ -55,32 +56,69 @@
         <!-- hence it should be here -->
         <title>{{ title }}</title>
 
-        <ul class="wrapping-list">
-          <li>
-            <h2>Random showcase</h2>
-            <div
-              id="random-showcase"
-              hx-get="/random-showcase"
-              hx-trigger="load once"
-              hx-swap="outerHTML"
-            ></div>
-          </li>
-          <li>
-            <div id="latest-posts">
-              <h2>Latest posts</h2>
-              <div><p>Posty postersson</p></div>
-            </div>
-          </li>
-        </ul>
+        <ul
+          id="showcase"
+          class="wrapping-list"
+          hx-get="/showcase"
+          hx-trigger="load once"
+          hx-swap="outerHTML"
+        ></ul>
         {% endblock %}
       </section>
     </main>
     <hr />
     <footer>
-      <div>Code is GPLv3, content copyright by Miska Tammenpää CC BY-NC-SA</div>
+      <p>
+        <span>
+          <a
+            href="https://git.tammenpaa.com/sirlarion/mtammenpaa"
+            target="_blank"
+            rel="noreferrer"
+            >Site & server code</a
+          >
+          is
+          <a
+            href="https://www.gnu.org/licenses/gpl-3.0.en.html"
+            target="_blank"
+            rel="license noreferrer"
+          >
+            GPLv3
+          </a>
+        </span>
+      </p>
+      <p
+        xmlns:cc="http://creativecommons.org/ns#"
+        xmlns:dct="http://purl.org/dc/terms/"
+      >
+        <span property="dct:title">Content © 2025</span> by
+        <span property="cc:attributionName">Miska Tammenpää</span> is licensed
+        under
+        <a
+          id="creativecommons"
+          href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
+          target="_blank"
+          rel="license noreferrer"
+        >
+          CC BY-NC-SA 4.0
+          <img
+            src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+            alt=""
+          /><img
+            src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+            alt=""
+          /><img
+            src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
+            alt=""
+          /><img
+            src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"
+            alt=""
+          />
+        </a>
+      </p>
+
       <div id="links">
         <a
-          href="https://git.tammenpaa.com/sirlarion/mtammenpaa"
+          href="https://git.tammenpaa.com/sirlarion/"
           target="_blank"
           rel="noreferrer"
           >git</a

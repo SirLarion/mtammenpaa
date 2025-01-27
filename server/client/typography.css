@@ -16,12 +16,18 @@ div {
   font-family: "Oak Sans";
 }
 
-span.htmx-a,
 a {
   font-weight: 600;
-  text-decoration-line: underline;
-  text-decoration-thickness: 2px;
+  text-decoration: none;
+}
 
+a:not(:has(span)) {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+nav > a {
+  text-decoration-line: underline;
   &:not(.active) {
     cursor: pointer;
   }
@@ -31,8 +37,11 @@ a {
   }
 }
 
-code {
+code,
+pre,
+pre span {
   font-family: "JetBrains Mono";
+  font-size: 0.75rem;
 }
 
 #main-title {
@@ -41,12 +50,24 @@ code {
   font-size: 2.5rem;
 }
 
-#random-showcase > a {
-  font-size: 1.5rem;
+ul.wrapping-list > li {
+  & span {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  & h4 {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+  }
+}
+
+footer > p {
+  text-align: center;
 }
 
 /* Overrides for wide screen only */
-@media (min-width: 720px) {
+@media (min-width: 960px) {
   #main-title {
     font-size: 4.5rem;
   }
@@ -70,19 +91,22 @@ code {
     font-size: 1.25rem;
   }
 
-  nav {
-    a,
-    span.htmx-a {
-      font-size: 1.5rem;
-    }
+  nav a {
+    font-size: 1.5rem;
   }
 
-  #random-showcase {
-    & > a {
-      font-size: 2rem;
-    }
-    & > p {
+  code,
+  pre,
+  pre span {
+    font-size: 1rem;
+  }
+
+  .preview {
+    & > span {
       font-size: 1rem;
+    }
+    & > h4 {
+      text-decoration-thickness: 3px;
     }
   }
 }

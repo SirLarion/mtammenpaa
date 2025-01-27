@@ -1,5 +1,22 @@
-<div id="random-showcase">
-  <img src="{{ img_url }}" alt="{{ img_alt }}" width="720" />
-  <a href="{{ url }}" target="_blank" rel="noreferrer">{{ name }}</a>
-  <p>{{ description }}</p>
-</div>
+<ul id="showcase" class="wrapping-list">
+  <li>
+    <h2>Random showcase</h2>
+    <a href="{{ random.endpoint }}" target="_blank" rel="noreferrer">
+      {{ random.preview }}
+    </a>
+  </li>
+  <li>
+    <h2>Latest post</h2>
+    <a
+      class="preview"
+      hx-get="{{ latest.endpoint }}"
+      hx-trigger="click"
+      hx-target="#content"
+      hx-push-url="true"
+      hx-swap="innerHTML"
+      hx-boost
+    >
+      {{ latest.preview }}
+    </a>
+  </li>
+</ul>

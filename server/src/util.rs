@@ -1,16 +1,18 @@
+use std::{env, fs};
+
 use dotenv::dotenv;
 use minijinja::{context, path_loader, AutoEscape, Environment};
 use palette::{color_difference::Wcag21RelativeContrast, FromColor, Hsl, Srgb};
-use std::env;
 
 use crate::{
     error::AppError,
-    types::{ClientColors, NavItem},
+    types::{ClientColors, NavItem, PreviewItem, PreviewMeta},
 };
 
-const NOESCAPE_TEMPLATES: [&str; 4] = [
+const NOESCAPE_TEMPLATES: [&str; 5] = [
     "main.html",
     "post.html",
+    "preview.html",
     "showcase.html",
     "previewList.html",
 ];
@@ -173,6 +175,88 @@ pub fn create_generated_css_variables(h: f32) -> String {
             }}
         </style>"#
     )
+}
+
+pub fn get_preview_meta(path: String) -> Result<PreviewMeta, AppError> {
+    let raw_str = fs::read_to_string(format!("./client/build/{path}/preview.json"))?;
+    Ok(serde_json::from_str::<PreviewMeta>(&raw_str)?)
+}
+
+pub fn build_preview_item(jinja: &Environment, meta: &PreviewMeta) -> Result<String, AppError> {
+    let PreviewMeta {
+        path,
+        img_urls,
+        img_alt,
+        display_name,
+        description,
+    } = meta;
+    let sources: String;
+
+    let is_external = path.starts_with("http");
+
+    // Multiple img source definitions
+    if img_urls.contains(",") {
+        sources = img_urls
+            .split(",")
+            .map(|src| {
+                if !is_external {
+                    format!("/build/{path}/{src}")
+                } else {
+                    src.to_string()
+                }
+            })
+            .fold(
+                Ok(String::new()),
+                |acc: Result<String, AppError>, curr: String| {
+                    let Ok(acc) = acc else {
+                        return acc;
+                    };
+
+                    let file = curr
+                        .split("/")
+                        .last()
+                        .ok_or(AppError::BuildError(format!("invalid image url")))?;
+
+                    let mut width = "1x".to_string();
+                    let mut media = "".to_string();
+                    let is_small = file.contains("-small");
+                    let is_dark = file.contains("-dark");
+
+                    if !(is_small || is_dark) {
+                        return Ok(format!(
+                            r#"{acc}<img src="{curr}" alt="{img_alt}" width="960" />"#
+                        ));
+                    }
+                    if file.contains("-dark") {
+                        media = "(prefers-color-scheme: dark)".to_string();
+                    }
+                    if file.contains("-small") {
+                        width = "480w".to_string();
+                        if media == "".to_string() {
+                            media = "(max-width: 480px)".to_string();
+                        } else {
+                            media = media + " and (max-width: 480px)"
+                        }
+                    }
+                    if !(file.contains("-dark") || file.contains("-small")) {}
+
+                    Ok(format!(
+                        r#"{acc}<source srcset="{curr} {width}" media="{media}" />"#
+                    ))
+                },
+            )?
+    } else {
+        sources = format!(r#"<img src="{img_urls}" alt="{img_alt}" width="960" />"#);
+    }
+
+    let preview = PreviewItem {
+        sources,
+        display_name: display_name.to_string(),
+        description: description.to_string(),
+    };
+
+    let template = jinja.get_template("preview.html")?;
+    Ok(template.render(context! { preview })?)
 }
 
 pub fn build_nav(jinja: &Environment, active_name: &str) -> Result<String, AppError> {

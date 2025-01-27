@@ -29,6 +29,9 @@ pub enum AppError {
 
     #[error(transparent)]
     TemplateError(#[from] minijinja::Error),
+
+    #[error("failure in preview definition: {0}")]
+    BuildError(String),
 }
 
 impl ResponseError for AppError {

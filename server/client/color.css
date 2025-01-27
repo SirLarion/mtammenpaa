@@ -29,13 +29,21 @@ header {
   background-color: var(--bg-rainbow);
 }
 
-body * {
+h1,
+h2,
+h3,
+h4,
+img,
+span,
+p,
+a,
+div {
   color: var(--fg-rainbow);
 }
 
 code,
 img,
-li#preview {
+.preview {
   background-color: var(--bg-rainbow-light);
 }
 
@@ -44,9 +52,17 @@ hr {
   opacity: 0.3;
 }
 
-span.htmx-a,
-a {
-  &:not(.active):hover {
+a:not(.active) {
+  &:hover,
+  &:active {
     color: var(--fg-rainbow-reverse);
+
+    & h4 {
+      color: var(--fg-rainbow-reverse);
+    }
   }
+}
+
+a#creativecommons > img {
+  background-color: initial;
 }

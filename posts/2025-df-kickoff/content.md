@@ -1,3 +1,9 @@
+<picture>
+    <source srcset="/build/2025-df-kickoff/aalto-fablab-small.webp 480w"
+    media="(max-width: 480px)" />
+    <img src="/build/2025-df-kickoff/aalto-fablab.webp" alt="The red-brick building of Aalto Studios in Otaniemi, Espoo, Finland. The Aalto Fablab can be barely seen through the windows." />
+</picture>
+
 ## Digital Fabrication, week 0
 
 This is something I've been waiting for for a while now. Electronics has been a
@@ -58,9 +64,8 @@ the same libraries in the HTML. I tried the idea on for size, but it was bugging
 me a bit. As HTMX has quite a backend-heavy approach to client-side state, I
 wanted to lean into that and try and have as little JS as I could. Following
 that, I realized I could just generate the colors on the backend! I was already
-planning on using a [templating
-engine](https://en.wikipedia.org/wiki/Web_template_system) so I could approach
-the colors in the same way.
+planning on using a [templating engine](https://en.wikipedia.org/wiki/Web_template_system) 
+so I could approach the colors in the same way.
 
 The first templating engine I tried was
 [Askama](https://rinja-rs.github.io/askama/). It did the trick initially and I
@@ -79,3 +84,53 @@ term!) so I went with it.
 
 Calculating the color contrast with the palette crate seemed like an easy task,
 but, well, there is a but.
+
+```rust
+fn get_themed_gen_colors(t: &str, h: f32) -> ClientColors {
+    let is_light = t == "light";
+    let s: f32 = 0.35;
+    let l: f32 = if is_light { 0.85 } else { 0.15 };
+
+    let hc =
+        generate_high_contrast_color(Hsl::new_srgb(h, s, l), if is_light { -1.0 } else { 1.0 });
+
+    // CSS has 0-100 for the range of s & l
+    let (s, l) = (s * 100.0, l * 100.0);
+    let (hcs, hcl) = (hc.saturation * 100.0, hc.lightness * 100.0);
+
+    ClientColors {
+        bg_rainbow: format!("hsl({}, {}%, {}%)", h, s, l),
+        bg_mono: format!(
+            "hsl({}, {}%, {}%)",
+            h,
+            s,
+            if is_light { 98.0 } else { 10.0 }
+        ),
+        bg_monostrong: format!(
+            "hsl({}, {}%, {}%)",
+            h,
+            s,
+            if is_light { 90.0 } else { 20.0 }
+        ),
+        bg_rainbowlight: format!(
+            "hsl({}, {}%, {}%)",
+            h,
+            s,
+            l + if is_light { -5.0 } else { 5.0 }
+        ),
+        fg_rainbow: format!("hsl({}, {}%, {}%)", h, hcs, hcl),
+        fg_rainbowdark: format!(
+            "hsl({}, {}%, {}%)",
+            h,
+            hcs,
+            hcl + if is_light { -15.0 } else { 15.0 }
+        ),
+        fg_rainbowreverse: format!(
+            "hsl({}, {}%, {}%)",
+            (h + 180.0) % 360.0,
+            hcs,
+            hcl + if is_light { -15.0 } else { 15.0 }
+        ),
+    }
+}
+```
