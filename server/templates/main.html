@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Dark mode favicon, VERY important -->
+    <script>
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.querySelectorAll("link[rel*='icon']").forEach((link) => {
+          link.href = "/favicon?dark=true&hue={{ hue }}";
+        });
+      }
+    </script>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -29,21 +40,8 @@
     <link rel="stylesheet" href="/layout.css" />
     <link rel="stylesheet" href="/color.css" />
     <link rel="stylesheet" href="/code.css" />
-
     <!-- Javascript -->
     <script src="/build/htmx.min.js" defer></script>
-
-    <!-- Dark mode favicon, VERY important -->
-    <script>
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        document.querySelectorAll("link[rel*='icon']").forEach((link) => {
-          link.href = "/favicon?dark=true&hue={{ hue }}";
-        });
-      }
-    </script>
   </head>
   <body>
     <header>

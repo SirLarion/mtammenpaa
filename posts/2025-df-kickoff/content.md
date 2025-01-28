@@ -8,17 +8,17 @@
 ## Digital Fabrication, week 0
 
 This is something I've been waiting for for a while now. Electronics has been a
-topic on the backlog for me for several years already. A year ago, I started
-actually getting more interested in it as a possibility to repurpose consumer
-electronics that have been lying around the house, somewhat at the end of their
-(conventional) lifespan. 
+topic on the backlog for me for several years already. About a year ago (fall of
+2023), I started actually getting more interested in it as a possibility to
+repurpose consumer electronics that have been lying around the house, somewhat
+at the end of their (conventional) lifespan. 
 
 Shortly, I came across the Aalto University Digital Fabrication
 minor and got *very* excited. But when I looked into it, I found out that you
 had to make a separate application and that the application period had already
 ended (queue sad trombone noise). However, I got very motivated to make sure
 that I get into that minor the next time it ran. In the meantime, I found the
-"Electronics workshop" course in Aalto and I got my electronics fix from that.
+"Electronics workshop" course in Aalto and got my electronics fix from that.
 
 Come last autumn, my hands were itching to write the application for this year's
 Digital Fabrication minor. Eventually, I of course found out that this year
@@ -43,95 +43,70 @@ javascript library(?), which is why those two make an excellent base for the
 software in my website. When I'm learning some other language/framework/paradigm
 I can then rewrite the website with that and learn something new all over again!
 
+The actual assignment in DF was creating a very simple website that would be
+automatically served by Git(Lab/Hub) to a web page. Due to my agenda for a
+portfolio website, I wanted to go (quite a bit 😅) beyond that.
+
 I'm also quite interested in trying out weird shit in web development. One idea
-I sloshed around in my mind was how I'd do content management. The website will
-be somewhat of a blog, meaning that I need to create posts somehow. I quite
-enjoy writing longer form in [Markdown](https://www.markdownguide.org) and thus
-wanted to use that somehow for content management. First, I thought I'd do
-client-side rendering with a JS library such as [Marked](https://marked.js.org),
+I had was randomly generated colors for each page visit (while adhering to
+[the WCAG 2.1 spec](https://www.w3.org/TR/WCAG21/#contrast-enhanced). This was something I'd
+already implemented for a previous run at a portfolio site and decided to port
+it over to the new one. Another idea I sloshed around in my mind was how I'd do
+content management. The website will be somewhat of a blog, meaning that I need
+to create posts somehow. I quite enjoy writing longer form in 
+[Markdown](https://www.markdownguide.org) and thus
+wanted to use that somehow for content management. First, I thought I'd simply do
+client-side rendering of MD to HTML with a JS library such as [Marked](https://marked.js.org),
 but then I realized I might as well just compile the posts into HTML beforehand
-and the server can then dish them out.
+and the server can then dish them out. I decided to use
+[Pandoc](https://pandoc.org) for that as it seemed very mature and I had a bit of
+experience with it beforehand. The only problem (so far :D) I could see with
+this approach was that I'd have no metadata like tags and title on the
+website etc. As a first solution, I decided to use an
+[SQLite](https://www.sqlite.org/) database and make a row for each post
+containing metadata. 
 
-Another item in the "weird shit" -list was the colors.In a previous run of my
-portfolio site, I made this random palette generator that adheres to the [WCAG
-2.1 standard](https://www.w3.org/TR/WCAG21/#contrast-enhanced). I wanted to port
-that to the new site as I do like the idea. After getting a basic
-[actix-web](https://actix.rs/) server running and HTMX successfully loading
-stuff into the DOM from there, I jumped on the color porting. There was nothing
-super difficult about it, but in the original Typescript implementation, I used a
-couple different JS libraries to handle the color formats and, importantly,
-check for the contrast between colors. Initially, I thought of just importing
-the same libraries in the HTML. I tried the idea on for size, but it was bugging
-me a bit. As HTMX has quite a backend-heavy approach to client-side state, I
-wanted to lean into that and try and have as little JS as I could. Following
-that, I realized I could just generate the colors on the backend! I was already
-planning on using a [templating engine](https://en.wikipedia.org/wiki/Web_template_system) 
-so I could approach the colors in the same way.
+The structure of my server ended up looking something like this:
 
-The first templating engine I tried was
-[Askama](https://rinja-rs.github.io/askama/). It did the trick initially and I
-could move on to actually generating the colors. The color generator works by
-utilizing [the HSL colorspace](https://en.wikipedia.org/wiki/HSL_and_HSV). It
-first picks a random hue and some fairly low value for saturation and a high one
-for lightness. Then it iteratively increases the saturation and decreases
-lightness until the resulting color has a contrast ratio above 4.5 (WCAG
-defined value for standard text against a background) with the original
-color. I needed to replace the contrast checker with something rust-based. I
-quickly found [palette](https://docs.rs/palette/latest/palette/), quite an
-advanced rust crate for managing colors between different color spaces, getting
-quite deep into color theory even. It was excessive for my needs, but there did
-not seem to be anything else that would work (AND remain stable in the longer
-term!) so I went with it.
+<pre>
+├── justfile
+├── posts
+│   ├── 2025-df-kickoff
+│   ├── About
+│   ├── justfile
+└── server
+    ├── client
+    ├── db.sqlite
+    ├── justfile
+    ├── migrations
+    ├── src
+    └── templates
+</pre>
 
-Calculating the color contrast with the palette crate seemed like an easy task,
-but, well, there is a but.
+`posts/` has the source .md files of the posts I've written (and any referenced
+files like images). `server/` contains both the rust server source code (inside
+`src`) and the `client/` (for assets, CSS and any possible javascript code such
+as HTMX). `migrations/` contains SQL files that, when aggregated, express the
+current state of the SQLite database. `templates/` contains
+[Jinja](https://jinja.palletsprojects.com/en/stable/) templates that are used on
+the rust backend to create dynamic content (using the
+[minijinja](https://docs.rs/minijinja/latest/minijinja/) rust crate).
 
-```rust
-fn get_themed_gen_colors(t: &str, h: f32) -> ClientColors {
-    let is_light = t == "light";
-    let s: f32 = 0.35;
-    let l: f32 = if is_light { 0.85 } else { 0.15 };
+For building, bundling and deploying, I decided to go with
+[Just](https://github.com/casey/just) as it seemed like a very nice and simple
+way to manage a varying mix of different source files. The definitions for it
+are managed in the `justfile`s (similar to e.g. Makefiles). For example, to
+build my posts (convert them from MD to HTML), I could run `just` inside `posts/`
+which would then execute the "default" script:
 
-    let hc =
-        generate_high_contrast_color(Hsl::new_srgb(h, s, l), if is_light { -1.0 } else { 1.0 });
-
-    // CSS has 0-100 for the range of s & l
-    let (s, l) = (s * 100.0, l * 100.0);
-    let (hcs, hcl) = (hc.saturation * 100.0, hc.lightness * 100.0);
-
-    ClientColors {
-        bg_rainbow: format!("hsl({}, {}%, {}%)", h, s, l),
-        bg_mono: format!(
-            "hsl({}, {}%, {}%)",
-            h,
-            s,
-            if is_light { 98.0 } else { 10.0 }
-        ),
-        bg_monostrong: format!(
-            "hsl({}, {}%, {}%)",
-            h,
-            s,
-            if is_light { 90.0 } else { 20.0 }
-        ),
-        bg_rainbowlight: format!(
-            "hsl({}, {}%, {}%)",
-            h,
-            s,
-            l + if is_light { -5.0 } else { 5.0 }
-        ),
-        fg_rainbow: format!("hsl({}, {}%, {}%)", h, hcs, hcl),
-        fg_rainbowdark: format!(
-            "hsl({}, {}%, {}%)",
-            h,
-            hcs,
-            hcl + if is_light { -15.0 } else { 15.0 }
-        ),
-        fg_rainbowreverse: format!(
-            "hsl({}, {}%, {}%)",
-            (h + 180.0) % 360.0,
-            hcs,
-            hcl + if is_light { -15.0 } else { 15.0 }
-        ),
-    }
-}
+```makefile
+default:
+  #!/usr/bin/env bash
+  for dir in *; do 
+    [[ -d $dir ]] && pandoc $dir/content.md -o $dir/content.html
+  done
+  exit 0
 ```
+
+The website structure started to come together. Next up was to actually get into
+the nitty-gritty of HTML & CSS.

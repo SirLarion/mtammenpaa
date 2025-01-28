@@ -41,8 +41,11 @@ div {
   color: var(--fg-rainbow);
 }
 
+path {
+  stroke: var(--fg-rainbow);
+}
+
 p > code,
-img,
 .preview {
   background-color: var(--bg-rainbow-light);
 }
@@ -55,10 +58,11 @@ hr {
 a:not(.active) {
   &:hover,
   &:active {
-    color: var(--fg-rainbow-reverse);
-
     & h4 {
       color: var(--fg-rainbow-reverse);
+    }
+    & path {
+      stroke: var(--fg-rainbow-reverse);
     }
   }
 }

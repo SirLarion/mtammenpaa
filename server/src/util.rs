@@ -248,6 +248,7 @@ pub fn build_preview_item(jinja: &Environment, meta: &PreviewMeta) -> Result<Str
     } else {
         sources = format!(r#"<img src="{img_urls}" alt="{img_alt}" width="960" />"#);
     }
+    let icon_svg = fs::read_to_string("./client/assets/link-external.svg")?;
 
     let preview = PreviewItem {
         sources,
@@ -256,7 +257,9 @@ pub fn build_preview_item(jinja: &Environment, meta: &PreviewMeta) -> Result<Str
     };
 
     let template = jinja.get_template("preview.html")?;
-    Ok(template.render(context! { preview })?)
+    Ok(template.render(
+        context! { preview, display_icon => if is_external { icon_svg } else { String::new() } },
+    )?)
 }
 
 pub fn build_nav(jinja: &Environment, active_name: &str) -> Result<String, AppError> {

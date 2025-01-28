@@ -21,6 +21,7 @@ a {
   text-decoration: none;
 }
 
+u,
 a:not(:has(p)) {
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -38,7 +39,6 @@ nav > a {
 }
 
 code,
-pre,
 pre span {
   font-family: "JetBrains Mono";
   font-size: 0.75rem;
