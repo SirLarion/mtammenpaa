@@ -3,6 +3,7 @@
     media="(max-width: 480px)" />
     <img src="/build/2025-df-kickoff/aalto-fablab.webp" alt="The red-brick building of Aalto Studios in Otaniemi, Espoo, Finland. The Aalto Fablab can be barely seen through the windows." />
 </picture>
+<span>*Aalto Fablab peeking out from the corner at the lovely, snowy Finland.*</span>
 
 ## Digital Fabrication, week 0
 

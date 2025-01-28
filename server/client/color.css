@@ -41,7 +41,7 @@ div {
   color: var(--fg-rainbow);
 }
 
-code,
+p > code,
 img,
 .preview {
   background-color: var(--bg-rainbow-light);

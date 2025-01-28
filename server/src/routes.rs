@@ -152,31 +152,6 @@ pub async fn posts(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRespo
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
 
-// #[get("/posts/latest")]
-// pub async fn latest_post(
-//     req: HttpRequest,
-//     ctx: web::Data<AppCtx>,
-// ) -> Result<HttpResponse, AppError> {
-//     ctx.db_pool.acquire().await?;
-
-//     let preview = fs::read_to_string(format!("./client/build/{path}/preview.html").to_string())?;
-//     let nav = build_nav(&ctx.jinja, "posts")?;
-//     let template = ctx.jinja.get_template("previewList.html")?;
-//
-//     let out = if is_htmx_req(&req) {
-//         template
-//             .eval_to_state(context! {  , nav })?
-//             .render_block("content")?
-//     } else {
-//         let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-//         template.render(
-//             context! {css_vars => create_generated_css_variables(hue), df_posts, posts, hue, nav },
-//         )?
-//     };
-//
-//     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
-// }
-
 #[get("/posts/{category}/{post_name}")]
 pub async fn get_post(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     ctx.db_pool.acquire().await?;
@@ -188,10 +163,11 @@ pub async fn get_post(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRe
             .await?;
 
     let post = fs::read_to_string(format!("./client/build/{path}/content.html"))?;
+    let meta = get_preview_meta(path)?;
 
     let template = ctx.jinja.get_template("post.html")?;
     let nav = build_nav(&ctx.jinja, "none")?;
-    let title = req.path();
+    let title = meta.display_name;
 
     let out = if is_htmx_req(&req) {
         template

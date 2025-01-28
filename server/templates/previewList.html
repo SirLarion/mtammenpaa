@@ -10,10 +10,9 @@
       <a  
         class="preview"
         hx-get="{{ post.endpoint }}"
-        hx-trigger="click"
         hx-target="#content"
         hx-push-url="true"
-        hx-swap="innerHTML"
+        hx-swap="innerHTML show:#content:top"
         hx-boost
       >
         {{ post.preview }}
@@ -28,10 +27,9 @@
       <a
         class="preview"
         hx-get="{{ post.endpoint }}"
-        hx-trigger="click"
         hx-target="#content"
         hx-push-url="true"
-        hx-swap="innerHTML"
+        hx-swap="innerHTML show:#content:top"
         hx-boost
       >
         {{ post.preview }}

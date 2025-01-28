@@ -10,10 +10,9 @@
     <a
       class="preview"
       hx-get="{{ latest.endpoint }}"
-      hx-trigger="click"
       hx-target="#content"
       hx-push-url="true"
-      hx-swap="innerHTML"
+      hx-swap="innerHTML show:#content:top"
       hx-boost
     >
       {{ latest.preview }}

@@ -21,7 +21,7 @@ a {
   text-decoration: none;
 }
 
-a:not(:has(span)) {
+a:not(:has(p)) {
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }
@@ -51,7 +51,7 @@ pre span {
 }
 
 ul.wrapping-list > li {
-  & span {
+  & p {
     font-size: 1rem;
     font-weight: 400;
   }
@@ -102,7 +102,7 @@ footer > p {
   }
 
   .preview {
-    & > span {
+    & > p {
       font-size: 1rem;
     }
     & > h4 {

@@ -1,320 +1,372 @@
-/* 
- * Code highlighting is done using highlight.js as a post-processing step for
- * building posts. These styles are from the highlight.js git repository
- *  https://github.com/highlightjs/highlight.js/blob/main/src/styles/base16
- */
-
-/*!
-  Theme: Classic Light
-  Author: Jason Heeris (http://heeris.id.au)
-  License: ~ MIT (or more permissive) [via base16-schemes-source]
-  Maintainer: @highlightjs/core-team
-  Version: 2021.09.0
+/*  ==============================================================================
+                           Kate (pandoc built-in style)                         
+    ==============================================================================
+    Style based on Kate's default colors.
+  
+    This stylesheet was produced using Pandoc v2.7.2.
+  
+    Pandoc is (c) 2006-2017 John MacFarlane (jgm@berkeley.edu).
+    Released under the GPL, version 2 or greater. 
+    ------------------------------------------------------------------------------
 */
-
-/*
-base00  #F5F5F5  Default Background
-base01  #E0E0E0  Lighter Background (Used for status bars, line number and folding marks)
-base02  #D0D0D0  Selection Background
-base03  #B0B0B0  Comments, Invisibles, Line Highlighting
-base04  #505050  Dark Foreground (Used for status bars)
-base05  #303030  Default Foreground, Caret, Delimiters, Operators
-base06  #202020  Light Foreground (Not often used)
-base07  #151515  Light Background (Not often used)
-base08  #AC4142  Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-base09  #D28445  Integers, Boolean, Constants, XML Attributes, Markup Link Url
-base0A  #F4BF75  Classes, Markup Bold, Search Text Background
-base0B  #90A959  Strings, Inherited Class, Markup Code, Diff Inserted
-base0C  #75B5AA  Support, Regular Expressions, Escape Characters, Markup Quotes
-base0D  #6A9FB5  Functions, Methods, Attribute IDs, Headings
-base0E  #AA759F  Keywords, Storage, Selector, Markup Italic, Diff Changed
-base0F  #8F5536  Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
-*/
-
-pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
+a.sourceLine {
+  display: inline-block;
+  line-height: 1.25;
 }
-
-code.hljs {
-  padding: 3px 5px;
+a.sourceLine {
+  pointer-events: none;
+  color: inherit;
+  text-decoration: inherit;
 }
-
-.hljs {
-  color: #303030;
-  background: #f5f5f5;
+a.sourceLine:empty {
+  height: 1.2em;
 }
-
-.hljs::selection,
-.hljs ::selection {
-  background-color: #d0d0d0;
-  color: #303030;
+.sourceCode {
+  overflow: visible;
 }
-
-/* purposely do not highlight these things */
-.hljs-formula,
-.hljs-params,
-.hljs-property {
+code.sourceCode {
+  white-space: pre;
+  position: relative;
 }
-
-/* base03 - #B0B0B0 -  Comments, Invisibles, Line Highlighting */
-.hljs-comment {
-  color: #b0b0b0;
+div.sourceCode {
+  margin: 1em 0;
 }
-
-/* base04 - #505050 -  Dark Foreground (Used for status bars) */
-.hljs-tag {
-  color: #505050;
+pre.sourceCode {
+  margin: 0;
 }
-
-/* base05 - #303030 -  Default Foreground, Caret, Delimiters, Operators */
-.hljs-subst,
-.hljs-punctuation,
-.hljs-operator {
-  color: #303030;
+@media screen {
+  div.sourceCode {
+    overflow: auto;
+  }
 }
-
-.hljs-operator {
-  opacity: 0.7;
+@media print {
+  code.sourceCode {
+    white-space: pre-wrap;
+  }
+  a.sourceLine {
+    text-indent: -1em;
+    padding-left: 1em;
+  }
 }
-
-/* base08 - Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted */
-.hljs-bullet,
-.hljs-variable,
-.hljs-template-variable,
-.hljs-selector-tag,
-.hljs-name,
-.hljs-deletion {
-  color: #ac4142;
+pre.numberSource a.sourceLine {
+  position: relative;
+  left: -4em;
 }
-
-/* base09 - Integers, Boolean, Constants, XML Attributes, Markup Link Url */
-.hljs-symbol,
-.hljs-number,
-.hljs-link,
-.hljs-attr,
-.hljs-variable.constant_,
-.hljs-literal {
-  color: #d28445;
+pre.numberSource a.sourceLine::before {
+  content: attr(title);
+  position: relative;
+  left: -1em;
+  text-align: right;
+  vertical-align: baseline;
+  border: none;
+  pointer-events: all;
+  display: inline-block;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0 4px;
+  width: 4em;
+  background-color: #ffffff;
+  color: #a0a0a0;
 }
-
-/* base0A - Classes, Markup Bold, Search Text Background */
-.hljs-title,
-.hljs-class .hljs-title,
-.hljs-title.class_ {
-  color: #f4bf75;
+pre.numberSource {
+  margin-left: 3em;
+  border-left: 1px solid #a0a0a0;
+  padding-left: 4px;
 }
-
-.hljs-strong {
+div.sourceCode {
+  color: #1f1c1b;
+  background-color: #ffffff;
+}
+@media screen {
+  a.sourceLine::before {
+    text-decoration: underline;
+  }
+}
+code span. {
+  color: #1f1c1b;
+} /* Normal */
+code span.al {
+  color: #bf0303;
+  background-color: #f7e6e6;
   font-weight: bold;
-  color: #f4bf75;
-}
-
-/* base0B - Strings, Inherited Class, Markup Code, Diff Inserted */
-.hljs-code,
-.hljs-addition,
-.hljs-title.class_.inherited__,
-.hljs-string {
-  color: #90a959;
-}
-
-/* base0C - Support, Regular Expressions, Escape Characters, Markup Quotes */
-.hljs-built_in,
-.hljs-doctag,
-.hljs-quote,
-.hljs-keyword.hljs-atrule,
-.hljs-regexp {
-  color: #75b5aa;
-}
-
-/* base0D - Functions, Methods, Attribute IDs, Headings */
-.hljs-function .hljs-title,
-.hljs-attribute,
-.ruby .hljs-property,
-.hljs-title.function_,
-.hljs-section {
-  color: #6a9fb5;
-}
-
-/* base0E - Keywords, Storage, Selector, Markup Italic, Diff Changed */
-.hljs-type,
-.hljs-template-tag,
-.diff .hljs-meta,
-.hljs-keyword {
-  color: #aa759f;
-}
-.hljs-emphasis {
-  color: #aa759f;
-  font-style: italic;
-}
-
-/* base0F - Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
-.hljs-meta,
-/*
-  prevent top level .keyword and .string scopes
-  from leaking into meta by accident
-*/
-.hljs-meta .hljs-keyword,
-.hljs-meta .hljs-string {
-  color: #8f5536;
-}
-
-.hljs-meta .hljs-keyword,
-/* for v10 compatible themes */
-.hljs-meta-keyword {
+} /* Alert */
+code span.an {
+  color: #ca60ca;
+} /* Annotation */
+code span.at {
+  color: #0057ae;
+} /* Attribute */
+code span.bn {
+  color: #b08000;
+} /* BaseN */
+code span.bu {
+  color: #644a9b;
   font-weight: bold;
-}
-
+} /* BuiltIn */
+code span.cf {
+  color: #1f1c1b;
+  font-weight: bold;
+} /* ControlFlow */
+code span.ch {
+  color: #924c9d;
+} /* Char */
+code span.cn {
+  color: #aa5500;
+} /* Constant */
+code span.co {
+  color: #898887;
+} /* Comment */
+code span.cv {
+  color: #0095ff;
+} /* CommentVar */
+code span.do {
+  color: #607880;
+} /* Documentation */
+code span.dt {
+  color: #0057ae;
+} /* DataType */
+code span.dv {
+  color: #b08000;
+} /* DecVal */
+code span.er {
+  color: #bf0303;
+  text-decoration: underline;
+} /* Error */
+code span.ex {
+  color: #0095ff;
+  font-weight: bold;
+} /* Extension */
+code span.fl {
+  color: #b08000;
+} /* Float */
+code span.fu {
+  color: #644a9b;
+} /* Function */
+code span.im {
+  color: #ff5500;
+} /* Import */
+code span.in {
+  color: #b08000;
+} /* Information */
+code span.kw {
+  color: #1f1c1b;
+  font-weight: bold;
+} /* Keyword */
+code span.op {
+  color: #1f1c1b;
+} /* Operator */
+code span.ot {
+  color: #006e28;
+} /* Other */
+code span.pp {
+  color: #006e28;
+} /* Preprocessor */
+code span.re {
+  color: #0057ae;
+  background-color: #e0e9f8;
+} /* RegionMarker */
+code span.sc {
+  color: #3daee9;
+} /* SpecialChar */
+code span.ss {
+  color: #ff5500;
+} /* SpecialString */
+code span.st {
+  color: #bf0303;
+} /* String */
+code span.va {
+  color: #0057ae;
+} /* Variable */
+code span.vs {
+  color: #bf0303;
+} /* VerbatimString */
+code span.wa {
+  color: #bf0303;
+} /* Warning */
 @media (prefers-color-scheme: dark) {
-  /*!
-  Theme: Classic Dark
-  Author: Jason Heeris (http://heeris.id.au)
-  License: ~ MIT (or more permissive) [via base16-schemes-source]
-  Maintainer: @highlightjs/core-team
-  Version: 2021.09.0
-  */
-
-  /*
-  base00  #151515  Default Background
-  base01  #202020  Lighter Background (Used for status bars, line number and folding marks)
-  base02  #303030  Selection Background
-  base03  #505050  Comments, Invisibles, Line Highlighting
-  base04  #B0B0B0  Dark Foreground (Used for status bars)
-  base05  #D0D0D0  Default Foreground, Caret, Delimiters, Operators
-  base06  #E0E0E0  Light Foreground (Not often used)
-  base07  #F5F5F5  Light Background (Not often used)
-  base08  #AC4142  Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-  base09  #D28445  Integers, Boolean, Constants, XML Attributes, Markup Link Url
-  base0A  #F4BF75  Classes, Markup Bold, Search Text Background
-  base0B  #90A959  Strings, Inherited Class, Markup Code, Diff Inserted
-  base0C  #75B5AA  Support, Regular Expressions, Escape Characters, Markup Quotes
-  base0D  #6A9FB5  Functions, Methods, Attribute IDs, Headings
-  base0E  #AA759F  Keywords, Storage, Selector, Markup Italic, Diff Changed
-  base0F  #8F5536  Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
-  */
-  .hljs {
-    color: #d0d0d0;
+  /*  ==============================================================================
+                        Breezedark (pandoc built-in style)                      
+    ==============================================================================
+    Style from the "Breeze Dark" KDE syntax highlighting theme.
+  
+    This stylesheet was produced using Pandoc v2.7.2.
+  
+    Pandoc is (c) 2006-2017 John MacFarlane (jgm@berkeley.edu).
+    Released under the GPL, version 2 or greater. 
+    ------------------------------------------------------------------------------
+*/
+  a.sourceLine {
+    display: inline-block;
+    line-height: 1.25;
+  }
+  a.sourceLine {
+    pointer-events: none;
+    color: inherit;
+    text-decoration: inherit;
+  }
+  a.sourceLine:empty {
+    height: 1.2em;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+  code.sourceCode {
+    white-space: pre;
+    position: relative;
+  }
+  div.sourceCode {
+    margin: 1em 0;
+  }
+  pre.sourceCode {
+    margin: 0;
+  }
+  @media screen {
+    div.sourceCode {
+      overflow: auto;
+    }
+  }
+  @media print {
+    code.sourceCode {
+      white-space: pre-wrap;
+    }
+    a.sourceLine {
+      text-indent: -1em;
+      padding-left: 1em;
+    }
+  }
+  pre.numberSource a.sourceLine {
+    position: relative;
+    left: -4em;
+  }
+  pre.numberSource a.sourceLine::before {
+    content: attr(title);
+    position: relative;
+    left: -1em;
+    text-align: right;
+    vertical-align: baseline;
+    border: none;
+    pointer-events: all;
+    display: inline-block;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 0 4px;
+    width: 4em;
+    background-color: #232629;
+    color: #7a7c7d;
+  }
+  pre.numberSource {
+    margin-left: 3em;
+    border-left: 1px solid #7a7c7d;
+    padding-left: 4px;
+  }
+  div.sourceCode {
+    color: #cfcfc2;
     background: #151515;
   }
-
-  .hljs::selection,
-  .hljs ::selection {
-    background-color: #303030;
-    color: #d0d0d0;
+  @media screen {
+    a.sourceLine::before {
+      text-decoration: underline;
+    }
   }
-
-  /* purposely do not highlight these things */
-  .hljs-formula,
-  .hljs-params,
-  .hljs-property {
-  }
-
-  /* base03 - #505050 -  Comments, Invisibles, Line Highlighting */
-  .hljs-comment {
-    color: #505050;
-  }
-
-  /* base04 - #B0B0B0 -  Dark Foreground (Used for status bars) */
-  .hljs-tag {
-    color: #b0b0b0;
-  }
-
-  /* base05 - #D0D0D0 -  Default Foreground, Caret, Delimiters, Operators */
-  .hljs-subst,
-  .hljs-punctuation,
-  .hljs-operator {
-    color: #d0d0d0;
-  }
-
-  .hljs-operator {
-    opacity: 0.7;
-  }
-
-  /* base08 - Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted */
-  .hljs-bullet,
-  .hljs-variable,
-  .hljs-template-variable,
-  .hljs-selector-tag,
-  .hljs-name,
-  .hljs-deletion {
-    color: #ac4142;
-  }
-
-  /* base09 - Integers, Boolean, Constants, XML Attributes, Markup Link Url */
-  .hljs-symbol,
-  .hljs-number,
-  .hljs-link,
-  .hljs-attr,
-  .hljs-variable.constant_,
-  .hljs-literal {
-    color: #d28445;
-  }
-
-  /* base0A - Classes, Markup Bold, Search Text Background */
-  .hljs-title,
-  .hljs-class .hljs-title,
-  .hljs-title.class_ {
-    color: #f4bf75;
-  }
-
-  .hljs-strong {
-    font-weight: bold;
-    color: #f4bf75;
-  }
-
-  /* base0B - Strings, Inherited Class, Markup Code, Diff Inserted */
-  .hljs-code,
-  .hljs-addition,
-  .hljs-title.class_.inherited__,
-  .hljs-string {
-    color: #90a959;
-  }
-
-  /* base0C - Support, Regular Expressions, Escape Characters, Markup Quotes */
-  .hljs-built_in,
-  .hljs-doctag,
-  .hljs-quote,
-  .hljs-keyword.hljs-atrule,
-  .hljs-regexp {
-    color: #75b5aa;
-  }
-
-  /* base0D - Functions, Methods, Attribute IDs, Headings */
-  .hljs-function .hljs-title,
-  .hljs-attribute,
-  .ruby .hljs-property,
-  .hljs-title.function_,
-  .hljs-section {
-    color: #6a9fb5;
-  }
-
-  /* base0E - Keywords, Storage, Selector, Markup Italic, Diff Changed */
-  .hljs-type,
-  .hljs-template-tag,
-  .diff .hljs-meta,
-  .hljs-keyword {
-    color: #aa759f;
-  }
-  .hljs-emphasis {
-    color: #aa759f;
-    font-style: italic;
-  }
-
-  /* base0F - Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
-  .hljs-meta,
-/*
-  prevent top level .keyword and .string scopes
-  from leaking into meta by accident
-*/
-.hljs-meta .hljs-keyword,
-.hljs-meta .hljs-string {
-    color: #8f5536;
-  }
-
-  .hljs-meta .hljs-keyword,
-/* for v10 compatible themes */
-.hljs-meta-keyword {
-    font-weight: bold;
-  }
+  code span. {
+    color: #cfcfc2;
+  } /* Normal */
+  code span.al {
+    color: #95da4c;
+  } /* Alert */
+  code span.an {
+    color: #3f8058;
+  } /* Annotation */
+  code span.at {
+    color: #2980b9;
+  } /* Attribute */
+  code span.bn {
+    color: #f67400;
+  } /* BaseN */
+  code span.bu {
+    color: #7f8c8d;
+  } /* BuiltIn */
+  code span.cf {
+    color: #fdbc4b;
+  } /* ControlFlow */
+  code span.ch {
+    color: #3daee9;
+  } /* Char */
+  code span.cn {
+    color: #27aeae;
+  } /* Constant */
+  code span.co {
+    color: #7a7c7d;
+  } /* Comment */
+  code span.cv {
+    color: #7f8c8d;
+  } /* CommentVar */
+  code span.do {
+    color: #a43340;
+  } /* Documentation */
+  code span.dt {
+    color: #2980b9;
+  } /* DataType */
+  code span.dv {
+    color: #f67400;
+  } /* DecVal */
+  code span.er {
+    color: #da4453;
+  } /* Error */
+  code span.ex {
+    color: #0099ff;
+  } /* Extension */
+  code span.fl {
+    color: #f67400;
+  } /* Float */
+  code span.fu {
+    color: #8e44ad;
+  } /* Function */
+  code span.im {
+    color: #27ae60;
+  } /* Import */
+  code span.in {
+    color: #c45b00;
+  } /* Information */
+  code span.kw {
+    color: #cfcfc2;
+  } /* Keyword */
+  code span.op {
+    color: #cfcfc2;
+  } /* Operator */
+  code span.ot {
+    color: #27ae60;
+  } /* Other */
+  code span.pp {
+    color: #27ae60;
+  } /* Preprocessor */
+  code span.re {
+    color: #2980b9;
+  } /* RegionMarker */
+  code span.sc {
+    color: #3daee9;
+  } /* SpecialChar */
+  code span.ss {
+    color: #da4453;
+  } /* SpecialString */
+  code span.st {
+    color: #f44f4f;
+  } /* String */
+  code span.va {
+    color: #27aeae;
+  } /* Variable */
+  code span.vs {
+    color: #da4453;
+  } /* VerbatimString */
+  code span.wa {
+    color: #da4453;
+  } /* Warning */
 }
