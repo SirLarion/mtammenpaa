@@ -12,8 +12,17 @@ img,
 span,
 p,
 a,
-div {
+div,
+td {
   font-family: "Oak Sans";
+}
+
+table td:first-of-type {
+  fon
+}
+
+td > span {
+  font-size: 0.75rem;
 }
 
 a {
@@ -66,6 +75,11 @@ footer > p {
   text-align: center;
 }
 
+blockquote > p {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
 /* Overrides for wide screen only */
 @media (min-width: 960px) {
   #main-title {
@@ -81,7 +95,9 @@ footer > p {
   h3 {
     font-size: 2rem;
   }
-  h4 {
+  h4,
+  nav a,
+  blockquote > p {
     font-size: 1.5rem;
   }
 
@@ -91,14 +107,15 @@ footer > p {
     font-size: 1.25rem;
   }
 
-  nav a {
-    font-size: 1.5rem;
-  }
-
   code,
   pre,
-  pre span {
+  pre span,
+  td > span {
     font-size: 1rem;
+  }
+
+  table td:first-of-type {
+    font-weight: initial;
   }
 
   .preview {

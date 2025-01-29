@@ -9,11 +9,20 @@ default:
       pandoc content.md -o ../build/$dir/content.html
       
       for img in *.jpg *.JPG *.jpeg *.png *.webp; do
-        imgname=${img%.*}
-        magick $img -resize 960x960 ../build/$dir/$imgname.webp
-        magick $img -resize 480x480 ../build/$dir/$imgname-small.webp
+        if [[ $(grep -c "ANMF" $img) == 0 && $(grep -c "$img" ../buildignore) == 0 ]]; then
+          imgname=${img%.*}
+          magick $img -resize 960x960 -quality 50 ../build/$dir/$imgname.webp
+          magick $img -resize 480x480 -quality 50 ../build/$dir/$imgname-small.webp
+        else
+          cp $img ../build/$dir
+        fi
       done
 
+      for vid in *.mp4 *.webm *.ogg; do
+        if [[ $(grep -c "$vid" ../buildignore) == 0 ]]; then
+          cp $vid ../build/$dir
+        fi
+      done
       cd -
     fi
   done

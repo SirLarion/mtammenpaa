@@ -1,6 +1,10 @@
-<img src="/build/About/small-miska.webp" alt="Tiny, 9-year-old version of me (Miska). I am sleeping on a
+<picture>
+    <source srcset="/build/About/small-miska-small.webp 480w"
+    media="(max-width: 480px)" />
+    <img src="/build/About/small-miska.webp" alt="Tiny, 9-year-old version of me (Miska). I am sleeping on a
 bench at a train station due to a fever. I have a hat with a reflector in the
-shape of a cat's head over my eyes." width="960" height="542" />
+shape of a cat's head over my eyes." />
+</picture>
 
 ## Moi!
 
@@ -10,14 +14,17 @@ me at 9 years old on an interrail trip with my family. I had just gotten a 40
 degree (celcius, I'm Finnish) fever and was sleeping it off. There are more
 timely pictures of me, but this is among the best ones.
 
-<img src="/build/About/big-miska.webp" alt="A more recent picture. I am in Sodankylä, Finland
+<picture>
+    <source srcset="/build/About/big-miska-small.webp 480w"
+    media="(max-width: 480px)" />
+    <img src="/build/About/big-miska.webp" alt="A more recent picture. I am in Sodankylä, Finland
 with my partner about to be enlightened at the Midnight sun film festival. I
 have the remains of a terrible vegan-not-designed-to-be-vegan pizza grasped
 between my thumb, index finger and middle finger. In fact, you can see then name
 of the pizza place behind on a sign, but I'm not the type of person to out them
 in the alt-text of an image. I am squinting my eyes away from the sun that is
-shining very brightly at around 11pm (hence the midnight sun)." width="720"
-height="479" />
+shining very brightly at around 11pm (hence the midnight sun)." />
+</picture>
 <span>*A more timely picture.*</span>
 
 I study computer science at Aalto University in Finland, but really I study

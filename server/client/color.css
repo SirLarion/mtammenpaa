@@ -46,7 +46,7 @@ path {
 }
 
 p > code,
-.preview {
+table td:first-of-type {
   background-color: var(--bg-rainbow-light);
 }
 
@@ -58,6 +58,8 @@ hr {
 a:not(.active) {
   &:hover,
   &:active {
+    color: var(--fg-rainbow-reverse);
+
     & h4 {
       color: var(--fg-rainbow-reverse);
     }
@@ -67,6 +69,21 @@ a:not(.active) {
   }
 }
 
+blockquote {
+  border-color: var(--fg-rainbow);
+  opacity: 0.65;
+}
+
 a#creativecommons > img {
   background-color: initial;
+}
+
+@media (min-width: 960px) {
+  table td:first-of-type {
+    background-color: initial;
+  }
+
+  .preview {
+    background-color: var(--bg-rainbow-light);
+  }
 }

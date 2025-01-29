@@ -1,5 +1,5 @@
 use actix_files::Files;
-use actix_web::{web, App, HttpServer};
+use actix_web::{middleware, web, App, HttpServer};
 
 mod db;
 mod error;
@@ -25,6 +25,7 @@ async fn main() -> Result<(), AppError> {
                 db_pool: pool.clone(),
                 jinja: jinja_env,
             }))
+            .wrap(middleware::Compress::default())
             .service(routes::index)
             .service(routes::favicon)
             .service(routes::about)
