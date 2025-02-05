@@ -46,7 +46,9 @@ path {
 }
 
 p > code,
-table td:first-of-type {
+table td:first-of-type,
+canvas,
+img {
   background-color: var(--bg-rainbow-light);
 }
 
@@ -67,6 +69,10 @@ a:not(.active) {
       stroke: var(--fg-rainbow-reverse);
     }
   }
+}
+
+.transparent {
+  opacity: 0;
 }
 
 blockquote {

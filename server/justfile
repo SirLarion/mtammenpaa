@@ -2,7 +2,7 @@ default:
   just client/
   cargo build
 
-build-release:
+build:
   just client/
   cargo build --release
 
@@ -10,4 +10,4 @@ clean:
   cargo clean
 
 start:
-  cargo run
+  watchexec -r -e rs,html,js cargo run

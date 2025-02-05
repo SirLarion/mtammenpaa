@@ -27,9 +27,12 @@ footer {
   margin: 2rem;
 }
 
-main img:not(.icon),
-main video {
-  width: 100%;
+main {
+  & img:not(.icon),
+  & video,
+  & canvas {
+    width: 100vw;
+  }
 }
 
 h1,
@@ -37,14 +40,16 @@ h2,
 h3,
 h4,
 p,
-blockquote {
+blockquote,
+ol {
   margin: 1rem;
 }
-p {
+p,
+ol {
   margin-top: 0;
 }
 
-p:has(+ p > img:not(.icon), + p > picture, + p > video) {
+p:has(+ p > img:not(.icon), + p > picture, + p > video, + p > canvas) {
   margin-bottom: 2rem;
 }
 
@@ -78,7 +83,7 @@ section#content {
   max-width: 100%;
 
   /* Media caption */
-  & p:has(picture, img:not(.icon)) > span,
+  & p:has(picture, img:not(.icon), canvas) > span,
   & video + p > span {
     display: block;
     margin-top: 0.5rem;
@@ -121,6 +126,10 @@ ul.wrapping-list {
   display: block;
   cursor: pointer;
   padding-bottom: 0.75rem;
+}
+
+canvas {
+  cursor: pointer;
 }
 
 .preview-text {
@@ -182,6 +191,12 @@ a#creativecommons {
   }
 }
 
+a#three-save {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
 blockquote {
   display: flex;
   align-items: center;
@@ -192,6 +207,18 @@ blockquote {
   & p {
     margin: 0;
   }
+}
+
+p:has(canvas) {
+  position: relative;
+}
+
+.floating {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  transition: opacity 100ms ease-in-out;
 }
 
 table {
@@ -232,6 +259,7 @@ table {
   h4,
   p,
   blockquote,
+  ol,
   #showcase h2 {
     margin-left: 0;
     margin-right: 0;
@@ -252,8 +280,10 @@ table {
 
   main {
     & img:not(.icon),
-    & video {
+    & video,
+    & canvas {
       border-radius: 0.5rem;
+      width: 100%;
     }
   }
 
@@ -291,7 +321,7 @@ table {
 /* Overrides for narrow screen only */
 
 @media (max-width: 960px) {
-  #post p:has(picture, img:not(.icon), video) {
+  #post p:has(picture, img:not(.icon), video, canvas) {
     margin: 0 0 1rem 0;
 
     span {

@@ -1,1 +1,5 @@
 htmx.min.js https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js
+three.module.js https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js
+GLTFLoader.js https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/loaders/GLTFLoader.js
+OrbitControls.js https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js
+robots.json https://raw.githubusercontent.com/ai-robots-txt/ai.robots.txt/refs/heads/main/robots.json

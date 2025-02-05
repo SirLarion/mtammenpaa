@@ -11,7 +11,7 @@ default:
       for img in *.jpg *.JPG *.jpeg *.png *.webp; do
         if [[ $(grep -c "ANMF" $img) == 0 && $(grep -c "$img" ../buildignore) == 0 ]]; then
           imgname=${img%.*}
-          magick $img -resize 960x960 -quality 50 ../build/$dir/$imgname.webp
+          magick $img -resize 880x880 -quality 50 ../build/$dir/$imgname.webp
           magick $img -resize 480x480 -quality 50 ../build/$dir/$imgname-small.webp
         else
           cp $img ../build/$dir
@@ -23,6 +23,11 @@ default:
           cp $vid ../build/$dir
         fi
       done
+
+      for comp in *.zip *.gz; do 
+        cp $comp ../build/$dir
+      done
+
       cd -
     fi
   done

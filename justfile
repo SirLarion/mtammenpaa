@@ -18,7 +18,7 @@ build-posts:
 build-tar:
   just build-posts
   tar -czf $TAR_FILE -C server client migrations src templates \
-    .env db.sqlite Cargo.lock Cargo.toml
+    .env.production db.sqlite Cargo.lock Cargo.toml
 
 deploy target:
   #!/usr/bin/env bash

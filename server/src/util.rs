@@ -1,16 +1,19 @@
-use std::{env, fs};
+use std::{collections::HashMap, env, fs};
 
 use dotenv::dotenv;
 use minijinja::{context, path_loader, AutoEscape, Environment};
 use palette::{color_difference::Wcag21RelativeContrast, FromColor, Hsl, Srgb};
+use rand::Rng;
+use serde_json::Value;
 
 use crate::{
     error::AppError,
-    types::{ClientColors, NavItem, PreviewItem, PreviewMeta},
+    types::{ClientColors, NavItem, PageKind, PreviewItem, PreviewMeta},
 };
 
-const NOESCAPE_TEMPLATES: [&str; 5] = [
+const NOESCAPE_TEMPLATES: [&str; 6] = [
     "main.html",
+    "page.html",
     "post.html",
     "preview.html",
     "showcase.html",
@@ -36,7 +39,11 @@ const NAV_ITEMS: [NavItem; 3] = [
 ];
 
 pub fn load_env() -> Result<(String, u16), AppError> {
-    dotenv().ok();
+    if cfg!(debug_assertions) {
+        dotenv().ok();
+    } else {
+        dotenv::from_filename(".env.production").ok();
+    }
     let ip: String = env::var("IPADDR")?;
     let port: u16 = env::var("PORT")?.parse()?;
 
@@ -54,6 +61,14 @@ pub fn create_jinja_env() -> Environment<'static> {
         }
     });
     env
+}
+
+pub fn load_robots_list() -> Result<Vec<String>, AppError> {
+    let raw_json = fs::read_to_string("./client/build/robots.json")?;
+    let json: HashMap<String, Value> = serde_json::from_str(&raw_json)?;
+    let robots: Vec<String> = json.into_keys().collect();
+
+    Ok(robots)
 }
 
 fn has_contrast(hsl1: Hsl, hsl2: Hsl) -> bool {
@@ -162,7 +177,7 @@ fn create_themed_variables(t: &str, colors: ClientColors) -> String {
     )
 }
 
-pub fn create_generated_css_variables(h: f32) -> String {
+fn create_generated_css_variables(h: f32) -> String {
     let (light, dark) = get_generated_colors(h);
     let light_vars = create_themed_variables("light", light);
     let dark_vars = create_themed_variables("dark", dark);
@@ -262,7 +277,41 @@ pub fn build_preview_item(jinja: &Environment, meta: &PreviewMeta) -> Result<Str
     )?)
 }
 
-pub fn build_nav(jinja: &Environment, active_name: &str) -> Result<String, AppError> {
+pub fn build_page<'a>(
+    jinja: &Environment,
+    page: PageKind<'a>,
+    is_partial: bool,
+) -> Result<String, AppError> {
+    let (template_name, nav_item, title, content_opt) = match page {
+        PageKind::Index => ("main.html", "front", "mlt", None),
+        PageKind::About { content } => ("post.html", "about", "About", Some(content)),
+        PageKind::List { content } => ("page.html", "posts", "Posts", Some(content)),
+        PageKind::Post { title, content } => ("post.html", "none", title, Some(content)),
+    };
+    let nav = build_nav(jinja, nav_item)?;
+    let template = jinja.get_template(template_name)?;
+
+    let out = if is_partial {
+        let ctx = content_opt.map_or_else(
+            || context! { title, nav },
+            |c| context! { title, nav, content => c },
+        );
+        template.eval_to_state(ctx)?.render_block("content")?
+    } else {
+        let dev = cfg!(debug_assertions);
+        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
+        let css_vars = create_generated_css_variables(hue);
+        let ctx = content_opt.map_or_else(
+            || context! { css_vars, hue, title, nav, dev },
+            |c| context! { css_vars, hue, title, nav, dev, content => c },
+        );
+        template.render(ctx)?
+    };
+
+    Ok(out)
+}
+
+fn build_nav(jinja: &Environment, active_name: &str) -> Result<String, AppError> {
     let template = jinja.get_template("nav.html")?;
     Ok(template.render(context! {
         nav_items => NAV_ITEMS

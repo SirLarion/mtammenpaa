@@ -4,6 +4,14 @@ use sqlx::{FromRow, SqlitePool, Type};
 pub struct AppCtx {
     pub db_pool: SqlitePool,
     pub jinja: minijinja::Environment<'static>,
+    pub robots: Vec<String>,
+}
+
+pub enum PageKind<'a> {
+    Index,
+    About { content: String },
+    List { content: String },
+    Post { title: &'a str, content: String },
 }
 
 #[derive(Debug)]

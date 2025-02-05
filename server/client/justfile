@@ -4,6 +4,7 @@ default:
   cat dependencies | while read dep 
   do
     read file url <<< "$dep"
+    echo "Downloading $file"
     curl -o build/$file $url
   done
 

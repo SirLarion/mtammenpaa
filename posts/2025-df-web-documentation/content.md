@@ -2,7 +2,7 @@
     <source srcset="/build/2025-df-web-documentation/code-dark.webp 1x" media="(prefers-color-scheme: dark)">
     <source srcset="/build/2025-df-web-documentation/code-light-small.webp 480w" media="(max-width: 480px)">
     <source srcset="/build/2025-df-web-documentation/code-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px)">
-    <img src="/build/2025-df-web-documentation/code-light.webp" alt="Rust code displaying the implementation of a web server endpoint." width="960">
+    <img src="/build/2025-df-web-documentation/code-light.webp" alt="Rust code displaying the implementation of a web server endpoint.">
 </picture>
 <span>
     <em>

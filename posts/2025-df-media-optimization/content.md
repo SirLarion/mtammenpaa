@@ -18,14 +18,14 @@ licensing media to and from our websites. Specifically, the optimization of
 images and video for use online is discussed along with Creative Commons
 licenses and — quite relevant for today — the licensing of content to web
 crawlers that train large language models. I'll go through these roughly in the
-order I worked on them. 
+order I worked on them.
 
 ### Copyright
 
 The first thing on the list is copyright. I'd actually already added a copyright
 blurb at the footer of my page before we talked about it in class. I'd had a
 vague idea about Creative Commons licenses, but nothing concrete so I went to
-their site to investigate. The CC-BY-NC-SA license tickled my interest for a few
+their site to investigate. The CC-BSY-NC-SA license tickled my interest for a few
 reasons. 
 
 First, the content I write here is quite personal in nature so the <span><img
@@ -41,11 +41,50 @@ height="16" /></span> SA seemed to do the trick for that.
 After learning more about CC on the course, I also added the full set of CC
 symbols in my site footer for some extra pizzazz 💅.
 
+### Files online
+
+Beyond plain text content, there are a lot of variables involved when sharing
+files through your website. For example, if you're simply showing a
+context-providing image in a blog post, let's be honest, it doesn't need to have
+1920x1080p resolution. The single largest factor affecting website responsivity
+is the speed of the back-and-forth message passing between the client and the
+server (unless you somehow bodge up your website with weird JS or something). It
+makes much more sense for the image to be as small as the largest resolution
+that it's displayed in. Looking at it with an upright phone with 480 pixels
+width, the image can then easily just have 480x270p resolution. This makes
+loading the picture far more responsive as the required network bandwidth is
+smaller.
+
+In addition to the resolution, image quality and compression have a lot of room
+for fiddling with. In many cases (especially when the image has been made
+smaller), the human eye cannot even perceive the difference between two
+images if the quality of the other has been decreased via extra compression.
+This is why you should *never* serve images as PNG files since they are
+uncompressed. JPG files can be heavily compressed with no noticable
+differences in quality and these days WebP can be used to apparently go even
+further.
+
+The same things apply for video, but with an extra level of magnitude. Video is
+practically always quite a bit larger in size than images, so serving one
+requires extra consideration. MP4 and WebM are quite good compressed file types
+for video, but inside that, you can still tune the level of compression
+(and of course resolution and frames-per-second, for example), to fit your use
+case. Vimeo focuses on artsy, high quality video so, for them, having less
+compression makes sense. A TikTok video, whose content barely skims your
+braincells however, can do with a lot more compression.
+
+I think about media compression in a similar way to compiled source code. You
+have your source (a PNG image, my server's rust files) which act as the generic,
+single source of truth for that piece of media. The source is then
+compiled/compressed for use in a *specific* use case (a small WebP for my blog,
+my server's binaries built on my webserver, for that specific hardware and OS
+software).
+
 ### Image optimization
 
 The images I'd used on the website were already in the WebP format as I'd heard
-somewhere that it's recommended for online images. I'd gone for it quite blindly
-though so I was curious to find out what the effect was.
+that it's recommended for online images. I'd gone for it quite blindly though so
+I was curious to find out what the effect was.
 
 This picture from my [About page](/about) was a good example as it was taken
 with a Real Camera™ (not a phone) so it was quite large. A 5456x3632p JPG, it
@@ -173,7 +212,7 @@ Disallow: /
 
 User-agent: Bytespider
 Disallow: /
-
+wide
 User-agent: CCBot
 Disallow: /
 
@@ -208,8 +247,6 @@ User-agent: Meta-ExternalAgent
 Disallow: /
 
 User-agent: Meta-ExternalFetcher
-Disallow: /
-
 Disallow: /
 
 User-agent: Omgili

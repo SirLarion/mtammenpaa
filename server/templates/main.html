@@ -1,12 +1,18 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Dark mode favicon, VERY important -->
     <script>
+      const HUE = {{ hue }};
+      const DEV = {{ dev }};
+
+      var DARK_MODE = false;
+
+      // Dark mode favicon, VERY important
       if (
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches
       ) {
+        DARK_MODE = true;
         document.querySelectorAll("link[rel*='icon']").forEach((link) => {
           link.href = "/favicon?dark=true&hue={{ hue }}";
         });
@@ -42,6 +48,15 @@
     <link rel="stylesheet" href="/code.css" />
     <!-- Javascript -->
     <script src="/build/htmx.min.js" defer></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/build/three.module.js",
+          "three/addons/loaders/GLTFLoader.js": "/build/GLTFLoader.js",
+          "three/addons/controls/OrbitControls.js": "/build/OrbitControls.js"
+        }
+      }
+    </script>
   </head>
   <body>
     <header>

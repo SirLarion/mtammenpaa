@@ -1,16 +1,15 @@
 use actix_files::NamedFile;
 use actix_web::{get, web, HttpRequest, HttpResponse};
 use minijinja::context;
-use rand::Rng;
 use serde::Deserialize;
 use std::{fs, io::Read};
 
 use crate::types::PreviewMeta;
-use crate::util::{build_preview_item, get_preview_meta};
+use crate::util::{build_page, build_preview_item, get_preview_meta};
 use crate::{
     error::AppError,
-    types::{AppCtx, PostMeta, PostPreview},
-    util::{build_nav, create_generated_css_variables, get_generated_colors},
+    types::{AppCtx, PageKind, PostMeta, PostPreview},
+    util::get_generated_colors,
 };
 
 fn is_htmx_req(req: &HttpRequest) -> bool {
@@ -41,41 +40,17 @@ pub async fn favicon(
 
 #[get("/")]
 pub async fn index(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
-    let title = "mlt";
-    let template = ctx.jinja.get_template("main.html")?;
-    let nav = build_nav(&ctx.jinja, "front")?;
-
-    let out = if is_htmx_req(&req) {
-        template
-            .eval_to_state(context! { title, nav })?
-            .render_block("content")?
-    } else {
-        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-        template
-            .render(context! {css_vars => create_generated_css_variables(hue), hue, title, nav })?
-    };
+    let out = build_page(&ctx.jinja, PageKind::Index, is_htmx_req(&req))?;
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
 
 #[get("/about")]
 pub async fn about(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     let file = NamedFile::open("./client/build/About/content.html")?;
-    let template = ctx.jinja.get_template("post.html")?;
-    let nav = build_nav(&ctx.jinja, "about")?;
-    let title = "About";
-    let mut post = String::new();
-    file.file().read_to_string(&mut post)?;
+    let mut content = String::new();
+    file.file().read_to_string(&mut content)?;
 
-    let out = if is_htmx_req(&req) {
-        template
-            .eval_to_state(context! { post, title, nav })?
-            .render_block("content")?
-    } else {
-        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-        template.render(
-            context! {css_vars => create_generated_css_variables(hue), post, hue, title, nav },
-        )?
-    };
+    let out = build_page(&ctx.jinja, PageKind::About { content }, is_htmx_req(&req))?;
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
 
@@ -134,20 +109,12 @@ pub async fn posts(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRespo
         .into_iter()
         .partition(|p| p.endpoint.contains("digital-fabrication"));
 
-    let nav = build_nav(&ctx.jinja, "posts")?;
+    let content = ctx
+        .jinja
+        .get_template("previewList.html")?
+        .render(context! { df_posts, posts })?;
 
-    let template = ctx.jinja.get_template("previewList.html")?;
-
-    let out = if is_htmx_req(&req) {
-        template
-            .eval_to_state(context! { df_posts, posts, nav })?
-            .render_block("content")?
-    } else {
-        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-        template.render(
-            context! {css_vars => create_generated_css_variables(hue), df_posts, posts, hue, nav },
-        )?
-    };
+    let out = build_page(&ctx.jinja, PageKind::List { content }, is_htmx_req(&req))?;
 
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
@@ -162,22 +129,16 @@ pub async fn get_post(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRe
             .fetch_one(&ctx.db_pool)
             .await?;
 
-    let post = fs::read_to_string(format!("./client/build/{path}/content.html"))?;
+    let content = fs::read_to_string(format!("./client/build/{path}/content.html"))?;
     let meta = get_preview_meta(path)?;
 
-    let template = ctx.jinja.get_template("post.html")?;
-    let nav = build_nav(&ctx.jinja, "none")?;
-    let title = meta.display_name;
-
-    let out = if is_htmx_req(&req) {
-        template
-            .eval_to_state(context! { post, title, nav })?
-            .render_block("content")?
-    } else {
-        let hue: f32 = rand::thread_rng().gen_range(0.0..360.0);
-        template.render(
-            context! {css_vars => create_generated_css_variables(hue), post, hue, title, nav },
-        )?
-    };
+    let out = build_page(
+        &ctx.jinja,
+        PageKind::Post {
+            title: &meta.display_name,
+            content,
+        },
+        is_htmx_req(&req),
+    )?;
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
 }
