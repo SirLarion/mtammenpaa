@@ -2,18 +2,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const GEOMETRY_EXTENSIONS = [".glb", ".gltf"];
-
-const geometryFiles = performance
-  .getEntriesByType("resource")
-  .reduce((acc, entry) => {
-    if (GEOMETRY_EXTENSIONS.some((ext) => entry.name.endsWith(ext))) {
-      const localPath = `/build/${entry.name.split("build")[1]}`;
-      acc.push(localPath);
-    }
-    return acc;
-  }, []);
-
 const getBareFileName = (path) => path.split("\\").pop().split("/").pop();
 
 function createThreeEnvironment() {
@@ -37,6 +25,8 @@ function createThreeEnvironment() {
     // Only use preserveDrawingBuffer in DEV mode
     preserveDrawingBuffer: DEV,
   });
+
+  renderer.setPixelRatio(window.devicePixelRatio);
 
   return {
     scene,
@@ -148,68 +138,82 @@ function render(envs) {
   requestAnimationFrame(() => render(envs));
 }
 
-const loader = new GLTFLoader();
+function createAndRegisterEnvs() {
+  const loader = new GLTFLoader();
 
-const material = new THREE.MeshPhongMaterial({
-  color: DEV ? "#252525" : `hsl(${HUE}, 70%, ${DARK_MODE ? 20 : 10}%)`,
-});
+  const material = new THREE.MeshPhongMaterial({
+    color: DEV ? "#252525" : `hsl(${HUE}, 70%, ${DARK_MODE ? 20 : 10}%)`,
+  });
 
-const envs = geometryFiles.map((file) => {
-  const { scene, camera, renderer } = createThreeEnvironment();
+  const envs = GEOMETRY_FILES.map((file) => {
+    const { scene, camera, renderer } = createThreeEnvironment();
 
-  loader.load(
-    file,
-    (model) => {
-      const object = model.scene;
-      object.traverse(function (child) {
-        if (child instanceof THREE.Mesh) {
-          child.material = material;
-        }
-      });
-      normalizeObjectScale(object);
-      scene.add(object);
+    loader.load(
+      file,
+      (model) => {
+        const object = model.scene;
+        object.traverse(function (child) {
+          if (child instanceof THREE.Mesh) {
+            child.material = material;
+          }
+        });
+        normalizeObjectScale(object);
+        scene.add(object);
 
-      // compute the box that contains all the stuff
-      // from root and below
-      const box = new THREE.Box3().setFromObject(object);
+        // compute the box that contains all the stuff
+        // from root and below
+        const box = new THREE.Box3().setFromObject(object);
 
-      const boxSize = box.getSize(new THREE.Vector3()).length();
-      const boxCenter = box.getCenter(new THREE.Vector3());
+        const boxSize = box.getSize(new THREE.Vector3()).length();
+        const boxCenter = box.getCenter(new THREE.Vector3());
 
-      const color = 0xffffff;
-      const intensity = 2;
-      const light = new THREE.DirectionalLight(color, intensity);
-      light.position.set(-3, 10, 6);
-      light.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
-      scene.add(light);
-      scene.add(light.target);
+        const color = 0xffffff;
+        const intensity = 2;
+        const light = new THREE.DirectionalLight(color, intensity);
+        light.position.set(-3, 10, 6);
+        light.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+        scene.add(light);
+        scene.add(light.target);
 
-      // set the camera to frame the box
-      frameArea(boxSize, boxSize, boxCenter, camera);
+        // set the camera to frame the box
+        frameArea(boxSize, boxSize, boxCenter, camera);
 
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.target.set(boxCenter.x, boxCenter.y, boxCenter.z);
-      controls.update();
-    },
-    undefined,
-    console.error,
-  );
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(boxCenter.x, boxCenter.y, boxCenter.z);
+        controls.update();
+      },
+      undefined,
+      console.error,
+    );
 
-  let picture = document.getElementById(getBareFileName(file));
-  picture.className = "floating";
-  picture.after(renderer.domElement);
-  renderFrame({ scene, camera, renderer });
+    let picture = document.getElementById(getBareFileName(file));
+    picture.className = "floating";
+    picture.after(renderer.domElement);
+    renderFrame({ scene, camera, renderer });
 
-  setTimeout(() => {
-    picture.className = "floating transparent";
-    setTimeout(() => picture.remove(), 100);
-  }, 200);
+    setTimeout(() => {
+      picture.className = "floating transparent";
+      setTimeout(() => picture.remove(), 100);
+    }, 200);
 
-  if (DEV) {
-    addSaveLink(renderer);
+    if (DEV) {
+      addSaveLink(renderer);
+    }
+
+    return { scene, camera, renderer };
+  });
+  GEOMETRY_FILES = [];
+
+  requestAnimationFrame(() => render(envs));
+}
+
+createAndRegisterEnvs();
+
+// Rerender THREE environments when doing HTMX partial loads
+document.addEventListener("htmx:afterSettle", () => {
+  if (GEOMETRY_FILES.length === 0) {
+    return;
   }
 
-  return { scene, camera, renderer };
+  createAndRegisterEnvs();
 });
-
-requestAnimationFrame(() => render(envs));

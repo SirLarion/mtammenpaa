@@ -1,6 +1,6 @@
 <picture>
     <source srcset="/build/2025-df-kickoff/aalto-fablab-small.webp 480w"
-    media="(max-width: 480px)" />
+    media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
     <img src="/build/2025-df-kickoff/aalto-fablab.webp" alt="The red-brick building of Aalto Studios in Otaniemi, Espoo, Finland. The Aalto Fablab can be barely seen through the windows." />
 </picture>
 <span>*Aalto Fablab peeking out from the corner at the lovely, snowy Finland.*</span>

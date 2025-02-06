@@ -103,12 +103,16 @@ ul.wrapping-list {
   gap: 2rem;
 
   @media (min-width: 1072px) {
-    & > li > a {
-      display: block;
-      max-width: 30rem;
+    & > li {
+      flex-grow: 0;
+      & > a {
+        display: block;
+        width: 30rem;
+      }
     }
     & img {
       height: 14rem;
+      object-fit: cover;
     }
   }
 
@@ -278,12 +282,17 @@ table {
     }
   }
 
+  ul > li {
+    flex-grow: 1;
+  }
+
   main {
     & img:not(.icon),
     & video,
     & canvas {
       border-radius: 0.5rem;
       width: 100%;
+      min-width: 100%;
     }
   }
 

@@ -1,11 +1,11 @@
-<link rel="preload" as="fetch" href="/build/2025-df-cad/fatspacer.glb" type="model/glb"/>
-<link rel="preload" as="fetch" href="/build/2025-df-cad/fusilli.glb" type="model/glb"/>
-<link rel="preload" as="fetch" href="/build/2025-df-cad/bottlecap.glb" type="model/glb"/>
+<script>
+    GEOMETRY_FILES = ["/build/2025-df-cad/fatspacer.glb", "/build/2025-df-cad/fusilli.glb", "/build/2025-df-cad/bottlecap.glb"];
+</script>
 <script type="module" src="/three.js" defer></script>
 
 <picture>
     <source srcset="/build/2025-df-cad/caliper-small.webp 480w"
-    media="(max-width: 480px)" />
+    media="(max-width: 480px) and (max-resolution: 1dppx)" />
     <img src="/build/2025-df-cad/caliper.webp" alt="A vernier caliper clamping a small metallic ring-like object." />
 </picture>
 <span>*Funky-looking spacer, it's like two different-sized spacers for the price of one 💰*</span>
@@ -15,13 +15,13 @@
 I have been working with CAD tools in one way or another for about 10 years.
 That's quite surprising for me as I feel like I've only done *real* CAD for a
 couple of months now. By real CAD, I mean specifically 3D-modelling using
-FreeCAD. I realize now that it narrows it down more than necessary. I am very
+software like FreeCAD. I realize now that that's quite a narrow view. I am very
 familiar with using Blender for 3D modelling (both for printing and rendering
-purposes), Inkscape for vector graphics and GIMP and Photoshop for raster
+purposes), Inkscape for vector graphics and GIMP or Photoshop for raster
 images. 
 
 I do still think there are quite fundamental differences between the engineer's
-CAD and the artist's CAD, but I can't quite put my finger to what they are. When
+CAD and the artist's CAD, but I can't quite put my finger on what they are. When
 I started using FreeCAD after having used quite a bit of Blender, I felt the
 difference click. Maybe it just has to do with how you get to the end result
 moreso than the result itself. *Using* FreeCAD feels more like programming and
@@ -46,13 +46,14 @@ using open source tools if I can so FreeCAD seemed like a no-brainer.
 
 ### FreeCAD starter
 
-To me, FreeCAD (probably other similar CAD programs) seems to have *the sketch*
-at its core. Largely speaking, everything you do is built out of 2D-sketches
-that have well-defined shapes and locations. You could probably just build all
-of these sketches out of simple lines and arcs, but for convenience, there are
-several different possibilities for what to use. So far on my FreeCAD adventures
-I've been mainly using the "Create circle by center" tool as (for some reason)
-most of my models — such as the thermos lid — have been circular.
+FreeCAD (and probably other similar CAD programs), as I've learned, has the
+concept of the *sketch* at its core. Largely speaking, everything you do is
+built out of 2D-sketches that have well-defined shapes and locations. You could
+probably just build all of these sketches out of simple lines and arcs, but for
+convenience, there are several different possibilities for what to use. So far
+on my FreeCAD adventures I've been mainly using the "Create circle by center"
+tool as (for some reason) most of my models — such as the thermos lid — have
+been circular.
 
 On the course, I learned about using construction geometry, that is, adding
 geometry to sketches that only acts as reference and is not included in the
@@ -76,7 +77,7 @@ One quite surefire way of finding out what exactly isn't constrained yet is to
 just click and drag on the sketch. Whip it around a little bit in different ways
 (yes, a very rigorous and academic approach) and look at how it's moving. This
 is how I discovered a particularly annoying underconstraint when I was making
-circular pockets on the bottom of a ring. I used an arc to make the sketch for
+round-edged pockets on the bottom of a ring. I used an arc to make the sketch for
 the pockets but the angle of the arc just refused to be constrained. Eventually
 I just gave and constrained it by using the "Block edge" constraint — quite
 shameful, I know. Maybe I should revisit that sketch after learning more on the
@@ -110,7 +111,7 @@ In terms of workflow, *previously* I would've done something like this:
 6. Pocket
 7. Chamfer the sharp edges
 
-In the spirit of the assignment, though, I wanted to try something new. First,
+In the spirit of the assignment, though, I wanted to try something new. First
 off, I made the model parametric by adding a spreadsheet and filling it in with
 the dimensions of the part. It took me a moment to understand as I didn't
 realize that I couldn't *use* the values just by referring to the labels, but
@@ -128,8 +129,8 @@ respectively), and then did the same for the vertical dimensions.
 
 <picture>
     <source srcset="/build/2025-df-cad/sketch-dark.webp 1x" media="(prefers-color-scheme: dark)">
-    <source srcset="/build/2025-df-cad/sketch-light-small.webp 480w" media="(max-width: 480px)">
-    <source srcset="/build/2025-df-cad/sketch-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px)">
+    <source srcset="/build/2025-df-cad/sketch-light-small.webp 480w" media="(max-width: 480px) and (max-resolution: 1.4dppx)">
+    <source srcset="/build/2025-df-cad/sketch-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px) and (max-resolution: 1.4dppx)">
     <img src="/build/2025-df-cad/sketch-light.webp" alt="FreeCAD in sketcher mode, showing a sketch looking like tall, elongated, letter L">
 </picture>
 
@@ -143,7 +144,7 @@ for your convenience.
     <img src="/build/2025-df-cad/fatspacer.webp" alt="A 3D-model of a 2-layered
     cylinder, where the top cylinder is around half the size of the bottom one." />
 </picture>
-<span>*Go on then, touch it. 😏*</span>
+<span>*Go on then, touch it.* 😏</span>
 
 Just to try out some other additive and subtractive tools, I started working on
 a strange helix thing. In the sketch, I wanted to connect a circle and a regular
@@ -162,7 +163,7 @@ but that turned out to be a no-no.
 
 <picture id="fusilli.glb">
     <source srcset="/build/2025-df-cad/fusilli-small.webp 480w"
-    media="(max-width: 480px)" />
+    media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
     <img src="/build/2025-df-cad/fusilli.webp" alt="A 3D-model of a helical
     shape looking a bit like fusilli." />
 </picture>
@@ -174,7 +175,7 @@ that has something fermenting in it.
 
 <picture id="bottlecap.glb">
     <source srcset="/build/2025-df-cad/bottlecap-small.webp 480w"
-    media="(max-width: 480px)" />
+    media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
     <img src="/build/2025-df-cad/bottlecap.webp" alt="A 3D-model of a bottle
     cap that has a hole in the middle." />
 </picture>

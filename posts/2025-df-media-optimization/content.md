@@ -1,6 +1,6 @@
 <p>
 <video autoplay loop muted alt="A gray tabby cat playing with a piece of birch bark that's attached to an old shoelace. He rolls around on a carpet while attacking the bark with playful fury.">
-  <source src="/build/2025-df-media-optimization/cat-small.webm" media="(max-width: 480px)" />
+  <source src="/build/2025-df-media-optimization/cat-small.webm" media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
   <source src="/build/2025-df-media-optimization/cat.webm" />
 </video>
 <span>
