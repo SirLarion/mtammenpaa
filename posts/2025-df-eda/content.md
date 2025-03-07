@@ -125,7 +125,20 @@ same for the MOSI (PICO), MISO (POCI), SCK and CSn pins to create an SPI
 connector. Other than those, I added an LED driven by one of the digital pins
 with a 100Ω resistor and a switch that's pulled up to 3V3 with a 10k resistor.
 Finally, I broke out the remaining digital pins (D0-D2) to be accessed via
-female headers.
+female headers
+
+Next, I had to run the electrical rules checker (ERC). This is important as it
+confirms that your schematic is valid and that everything is connected. 
+
+<p>
+<video autoplay loop muted alt="The electrical rules checker in KiCad showing a
+passing check.">
+  <source src="/media/xiao-schematic-erc-dark.webm" media="(prefers-color-scheme: dark)" />
+  <source src="/media/xiao-schematic-erc-light.webm" />
+</video>
+<span>*Getting the green light 🟢*</span>
+</p>
+
 
 After putting together the schematic, I jumped over to the PCB editor. Now I
 needed to lay out all of the footprints of the parts that I'd added in the
@@ -194,9 +207,10 @@ reverse of all the other connections. In KiCad, you do this by selecting the
 "Draw filled zones" tool, going all the way around your PCB, and then clicking 
 "Edit -> Fill all zones" (or just pressing B).
 
-Finally, I had to run the design rules checker (DRC). This is important as it
-confirms that all the connections are valid and that there aren't any short
-circuits, for example. For my DRC, well, I'll let the GIF speak for itself.
+Finally, I had to run the *design* rules checker (DRC). It's similar to the ERC,
+but it confirms that all the connections are valid and that there aren't any
+short circuits, for example. For my DRC, well, I'll let the GIF speak for
+itself.
 
 <p>
 <video autoplay loop muted alt="The design rules checker in KiCad showing a
