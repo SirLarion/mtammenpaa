@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+touch build.sqlite
+
+create="\
+  CREATE TABLE IF NOT EXISTS timestamps (\
+      id INTEGER PRIMARY KEY,\
+      path TEXT NOT NULL UNIQUE,\
+      timestamp UNSIGNED BIG INT NOT NULL\
+  );"
+
+echo $create | sqlite3 build.sqlite

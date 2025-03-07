@@ -1,7 +1,7 @@
 <picture>
-    <source srcset="/build/About/small-miska-small.webp 480w"
+    <source srcset="/media/small-miska-small.webp 480w"
     media="(max-width: 480px)" />
-    <img src="/build/About/small-miska.webp" alt="Tiny, 9-year-old version of me (Miska). I am sleeping on a
+    <img src="/media/small-miska.webp" alt="Tiny, 9-year-old version of me (Miska). I am sleeping on a
 bench at a train station due to a fever. I have a hat with a reflector in the
 shape of a cat's head over my eyes." />
 </picture>
@@ -15,9 +15,9 @@ degree (celcius, I'm Finnish) fever and was sleeping it off. There are more
 timely pictures of me, but this is among the best ones.
 
 <picture>
-    <source srcset="/build/About/big-miska-small.webp 480w"
+    <source srcset="/media/big-miska-small.webp 480w"
     media="(max-width: 480px)" />
-    <img src="/build/About/big-miska.webp" alt="A more recent picture. I am in Sodankylä, Finland
+    <img src="/media/big-miska.webp" alt="A more recent picture. I am in Sodankylä, Finland
 with my partner about to be enlightened at the Midnight sun film festival. I
 have the remains of a terrible vegan-not-designed-to-be-vegan pizza grasped
 between my thumb, index finger and middle finger. In fact, you can see then name

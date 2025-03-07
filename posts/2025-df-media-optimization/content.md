@@ -1,7 +1,7 @@
 <p>
-<video autoplay loop muted alt="A gray tabby cat playing with a piece of birch bark that's attached to an old shoelace. He rolls around on a carpet while attacking the bark with playful fury.">
-  <source src="/build/2025-df-media-optimization/cat-small.webm" media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
-  <source src="/build/2025-df-media-optimization/cat.webm" />
+<video autoplay loop muted poster="/media/cat.webp" alt="A gray tabby cat playing with a piece of birch bark that's attached to an old shoelace. He rolls around on a carpet while attacking the bark with playful fury.">
+  <source src="/media/cat-small.webm" media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
+  <source src="/media/cat.webm" />
 </video>
 <span>
   <em>
@@ -91,9 +91,9 @@ with a Real Camera™ (not a phone) so it was quite large. A 5456x3632p JPG, it
 weighed in around 5.7MB.
 
 <picture>
-    <source srcset="/build/About/big-miska-small.webp 480w"
+    <source srcset="/media/big-miska-small.webp 480w"
     media="(max-width: 480px)" />
-    <img src="/build/About/big-miska.webp" alt="An image of me to use as an
+    <img src="/media/big-miska.webp" loading="lazy" alt="An image of me to use as an
     example of image optimization" />
 </picture>
 <span>*Picture of me on the About page, this has been scaled and compressed
@@ -127,7 +127,7 @@ magick miska.jpg -resize 1920x1920 -quality 50 miska1920.webp
 
 The result has very nice quality, yet is around 176kB:
 
-<img src="/build/2025-df-media-optimization/miska1920.webp" alt="A 1920x1278p image of me to use as an example of image optimization." />
+<img src="/media/miska1920.webp" loading="lazy" alt="A 1920x1278p image of me to use as an example of image optimization." />
 
 Now, I wanted to do this for *all* images on my site. However, I didn't want to
 *have* to manually do that for each image in a post I make. Thanks to the build
@@ -172,10 +172,10 @@ image and the media query that chooses between them (like I did in [Week
 <!-- For the About page, for example -->
 <picture>
     <source 
-      srcset="/build/About/miska-small.webp 480w" 
+      srcset="/media/miska-small.webp 480w" 
       media="(max-width: 480px)"
     />
-    <img src="/build/About/miska.webp" />
+    <img src="/media/miska.webp" />
 </picture>
 ```
 
@@ -310,12 +310,12 @@ seems like it doesn't have much of an effect on the file size. The FPS value and
 
 |                     | `q:v 30`                                                                                 | `q:v 20`                                                                                 | `q:v 10`                                                                                 | `q:v 5`                                                                                  |
 | ------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| <span>16 FPS</span> | <img src="/build/2025-df-media-optimization/cat-small.webp" /><span>576kB</span>         | <img src="/build/2025-df-media-optimization/cat-small-q20.webp" /><span>444kB</span>     | <img src="/build/2025-df-media-optimization/cat-small-q10.webp" /><span>313kB</span>     | <img src="/build/2025-df-media-optimization/cat-small-q5.webp" /><span>240kB</span>      |
-| <span>10 FPS</span> | <img src="/build/2025-df-media-optimization/cat-small-q30-f10.webp" /><span>359kB</span> | <img src="/build/2025-df-media-optimization/cat-small-q20-f10.webp" /><span>277kB</span> | <img src="/build/2025-df-media-optimization/cat-small-q10-f10.webp" /><span>195kB</span> | <img src="/build/2025-df-media-optimization/cat-small-q5-f10.webp" /><span>150kB</span>  |
+| <span>16 FPS</span> | <img src="/media/cat-small.webp" loading="lazy" /><span>576kB</span>                     | <img src="/media/cat-small-q20.webp" loading="lazy" /><span>444kB</span>                 | <img src="/media/cat-small-q10.webp" loading="lazy" /><span>313kB</span>                 | <img src="/media/cat-small-q5.webp" loading="lazy" /><span>240kB</span>                  |
+| <span>10 FPS</span> | <img src="/media/cat-small-q30-f10.webp" loading="lazy" /><span>359kB</span>             | <img src="/media/cat-small-q20-f10.webp" loading="lazy" /><span>277kB</span>             | <img src="/media/cat-small-q10-f10.webp" loading="lazy" /><span>195kB</span>             | <img src="/media/cat-small-q5-f10.webp" loading="lazy" /><span>150kB</span>              |
 
 Let's see that smallest one in a bit more detail just for reference:
 
-<img src="/build/2025-df-media-optimization/cat-small-q5-f10.webp" />
+<img src="/media/cat-small-q5-f10.webp" loading="lazy" alt="A very low quality GIF of the same cat." />
 <span>*That's pretty cursed.*</span>
 
 Technically, the course assignment called for making a 10 second 1280x720p
@@ -354,7 +354,7 @@ With some quality loss, I could even do CRF 60 at 493kB!
 Here's the final result at CRF 50:
 
 <p>
-  <video autoplay loop muted src="/build/2025-df-media-optimization/cat10HD.webm" type="video/webm"></video>
+  <video autoplay loop muted preload="none" src="/media/cat10HD.webm" poster="/media/cat10HD.webp" type="video/webm"></video>
 </p>
 
 That's much better and smaller than my WebP gif so I might as well use that in

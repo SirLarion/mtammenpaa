@@ -15,7 +15,7 @@ function createThreeEnvironment() {
 
   const skyColor = 0xb1e1ff;
   const groundColor = 0xb97a20;
-  const intensity = 2.5;
+  const intensity = 2;
   const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
   scene.add(light);
 
@@ -41,8 +41,7 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
   const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
 
   const direction = new THREE.Vector3()
-    .subVectors(camera.position, boxCenter)
-    .multiply(new THREE.Vector3(1, 0, 1))
+    .set(0, Math.tan((INITIAL_ANGLE * Math.PI) / 180), 1)
     .normalize();
 
   camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
@@ -52,8 +51,6 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
 
   camera.updateProjectionMatrix();
 
-  // Slight angle from above
-  camera.position.y += 10;
   camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
 }
 
@@ -167,13 +164,20 @@ function createAndRegisterEnvs() {
         const boxSize = box.getSize(new THREE.Vector3()).length();
         const boxCenter = box.getCenter(new THREE.Vector3());
 
-        const color = 0xffffff;
+        const color = 0xfffffc;
         const intensity = 2;
-        const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(-3, 10, 6);
-        light.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
-        scene.add(light);
-        scene.add(light.target);
+        const lightLeft = new THREE.DirectionalLight(color, intensity);
+        const lightRight = new THREE.DirectionalLight(color, intensity);
+
+        lightLeft.position.set(3, 7, 5);
+        lightLeft.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+        scene.add(lightLeft);
+        scene.add(lightLeft.target);
+
+        lightRight.position.set(-3, 7, 5);
+        lightRight.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+        scene.add(lightRight);
+        scene.add(lightRight.target);
 
         // set the camera to frame the box
         frameArea(boxSize, boxSize, boxCenter, camera);

@@ -1,34 +1,116 @@
+export DIFF_DB := absolute_path("./build.sqlite")
+export CONTENT_DB := absolute_path("../server/db.sqlite")
+
+diff := absolute_path("./check_diff")
+init_diff := absolute_path("./create_diff_table")
+
 default:
   #!/usr/bin/env bash
-  shopt -s nullglob
-  (rm -r build > /dev/null 2>&1 || true) && mkdir build
+  {{ init_diff }}
+
   for dir in *; do 
-    if [[ -d $dir && $dir != "build" ]]; then
-      mkdir build/$dir
-      cd $dir
-      pandoc content.md -o ../build/$dir/content.html
-      
-      for img in *.jpg *.JPG *.jpeg *.png *.webp; do
-        if [[ $(grep -c "ANMF" $img) == 0 && $(grep -c "$img" ../buildignore) == 0 ]]; then
-          imgname=${img%.*}
-          magick $img -resize 880x880 -quality 50 ../build/$dir/$imgname.webp
-          magick $img -resize 480x480 -quality 50 ../build/$dir/$imgname-small.webp
-        else
-          cp $img ../build/$dir
-        fi
-      done
-
-      for vid in *.mp4 *.webm *.ogg; do
-        if [[ $(grep -c "$vid" ../buildignore) == 0 ]]; then
-          cp $vid ../build/$dir
-        fi
-      done
-
-      for comp in *.zip *.gz; do 
-        cp $comp ../build/$dir
-      done
-
-      cd -
+    if [[ -d $dir ]]; then
+      just build-post $dir
     fi
   done
   exit 0
+
+init-post:
+  #!/usr/bin/env bash
+  read -p "title: " title
+  read -p "dir: " dir
+  read -p "endpoint: " endpoint
+  read -p "tags: " tags
+
+  mkdir $dir
+
+  jq --null-input \
+    --arg title "$title" \
+    --arg endpoint "$endpoint" \
+    --arg tags "$tags" \
+    '{ "title": $title, "endpoint": $endpoint , "tags": $tags }' > $dir/meta.json
+
+  echo "## TITLE" > $dir/content.md  
+  echo "<div class=\"preview-text\"><h4>$title</h4><p></p></div>" > $dir/preview.html
+  
+
+build-post post:
+  #!/usr/bin/env bash
+  shopt -s nullglob
+  post_path={{ invocation_directory() }}/{{ post }}
+
+  cd $post_path
+  
+  if [[ $({{ diff }} $post_path/content.md ) -ne 0 ||
+        $({{ diff }} $post_path/meta.json ) -ne 0 ||
+        $({{ diff }} $post_path/preview.html ) -ne 0 ]]; then 
+    echo "Building {{ post }}"
+    title=$(jq -r '.title' meta.json)
+    tags=$(jq -r '.tags' meta.json)
+    endpoint=$(jq -r '.endpoint' meta.json)
+    published_at=$(jq '.published_at' meta.json | sed "s/\"/'/g")
+    preview=$(cat preview.html | sed "s/'/''/g")
+    content=$(pandoc content.md -t html | sed "s/'/''/g")
+    
+    echo "INSERT OR REPLACE INTO posts \
+      (title, preview, content, endpoint, tags, published_at) \
+    VALUES \
+      ('$title', '$preview', '$content', '$endpoint', '$tags', $published_at);" | sqlite3 $CONTENT_DB
+  fi
+
+  cd media
+
+  for f in *; do 
+    if [[ $({{ diff }} $post_path/media/$f ) -ne 0 ]]; then
+  		echo "Building {{ post }}/$f"
+      if [[ "${f##*.}" == "webp" && $(grep -c "$f" ../../buildignore) -eq 0 ]]; then 
+        imgname=${f%.*}
+        [[ ! $imgname =~ "small" ]] && magick $f -resize 480x480 -quality 50 $imgname-small.webp
+      fi
+
+  	  echo "INSERT OR REPLACE INTO media \
+  	  	(path, mime, data, updated_at) \
+  	  VALUES \
+  	  	('$f', '$(file -b --mime-type $f)', '$(hexdump -ve '1/1 "%0.2X"' $f)', CURRENT_TIMESTAMP);" | sqlite3 $CONTENT_DB	
+    fi
+  done
+
+build-img post:
+  #!/usr/bin/env bash
+  shopt -s nullglob
+
+  for dir in *{{ post }}*; do 
+    cd $dir
+
+    for img in *.png *.jpg *.JPG *.jpeg; do
+      if [[ $(grep -c "$img" ../buildignore) == 0 ]]; then
+        imgname=${img%.*}
+        magick $img -resize 880x880 -quality 50 media/$imgname.webp
+      fi
+    done
+
+  done
+  exit 0
+
+build-video post:
+  #!/usr/bin/env bash
+  shopt -s nullglob
+
+  for dir in *{{ post }}*; do 
+    cd $dir
+
+    for vid in *.mp4 *.mkv; do
+      if [[ $(grep -c "$vid" ../buildignore) == 0 ]]; then
+        vidname=${vid%.*}
+        ffmpeg -i $vid -vf "scale=880:-1" -c:v libvpx-vp9 -pix_fmt yuv420p -b:v 0 -crf 50 -pass 1 -an -f webm -y /dev/null
+        ffmpeg -y -i $vid -vf "scale=880:-1" -c:v libvpx-vp9 -pix_fmt yuv420p -b:v 0 -crf 50 -pass 2 -an $vidname.webm
+        ffmpeg -i $vid -vf "select=eq(n\,0)" -q:v 3 $vidname-poster.webp
+        mv {$vidname.webm,$vidname-poster.webp} media
+        rm ffmpeg*.log
+        rm $vid*.log
+      fi
+    done
+
+  done
+  exit 0
+

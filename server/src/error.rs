@@ -32,6 +32,12 @@ pub enum AppError {
 
     #[error("failure in preview definition: {0}")]
     BuildError(String),
+
+    #[error(transparent)]
+    MimeConversionError(#[from] mime::FromStrError),
+
+    #[error(transparent)]
+    HexError(#[from] hex::FromHexError),
 }
 
 impl ResponseError for AppError {

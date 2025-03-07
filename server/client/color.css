@@ -41,6 +41,7 @@ div {
   color: var(--fg-rainbow);
 }
 
+rect,
 path {
   stroke: var(--fg-rainbow);
 }

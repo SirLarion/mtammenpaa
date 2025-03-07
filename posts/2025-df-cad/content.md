@@ -1,12 +1,13 @@
 <script>
-    GEOMETRY_FILES = ["/build/2025-df-cad/fatspacer.glb", "/build/2025-df-cad/fusilli.glb", "/build/2025-df-cad/bottlecap.glb"];
+    GEOMETRY_FILES = ["/media/fatspacer.glb", "/media/fusilli.glb", "/media/bottlecap.glb"];
+    INITIAL_ANGLE = 25;
 </script>
 <script type="module" src="/three.js" defer></script>
 
 <picture>
-    <source srcset="/build/2025-df-cad/caliper-small.webp 480w"
+    <source srcset="/media/caliper-small.webp 480w"
     media="(max-width: 480px) and (max-resolution: 1dppx)" />
-    <img src="/build/2025-df-cad/caliper.webp" alt="A vernier caliper clamping a small metallic ring-like object." />
+    <img src="/media/caliper.webp" fetchpriority="high" alt="A vernier caliper clamping a small metallic ring-like object." />
 </picture>
 <span>*Funky-looking spacer, it's like two different-sized spacers for the price of one 💰*</span>
 
@@ -128,10 +129,10 @@ relative to the origin using, for example, `Spreadsheet.FullDiameter / 2` and
 respectively), and then did the same for the vertical dimensions.
 
 <picture>
-    <source srcset="/build/2025-df-cad/sketch-dark.webp 1x" media="(prefers-color-scheme: dark)">
-    <source srcset="/build/2025-df-cad/sketch-light-small.webp 480w" media="(max-width: 480px) and (max-resolution: 1.4dppx)">
-    <source srcset="/build/2025-df-cad/sketch-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px) and (max-resolution: 1.4dppx)">
-    <img src="/build/2025-df-cad/sketch-light.webp" alt="FreeCAD in sketcher mode, showing a sketch looking like tall, elongated, letter L">
+    <source srcset="/media/sketch-dark.webp 1x" media="(prefers-color-scheme: dark)">
+    <source srcset="/media/sketch-light-small.webp 480w" media="(max-width: 480px) and (max-resolution: 1.4dppx)">
+    <source srcset="/media/sketch-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px) and (max-resolution: 1.4dppx)">
+    <img src="/media/sketch-light.webp" loading="lazy" alt="FreeCAD in sketcher mode, showing a sketch looking like tall, elongated, letter L">
 </picture>
 
 With the sketch ready, I clicked on "Revolution" and out comes the model. As a
@@ -139,9 +140,9 @@ finishing touch, I added a chamfer on the edges. Here's the model rendered out
 for your convenience.
 
 <picture id="fatspacer.glb">
-    <source srcset="/build/2025-df-cad/fatspacer-small.webp 480w"
+    <source srcset="/media/fatspacer-small.webp 480w"
     media="(max-width: 480px)" />
-    <img src="/build/2025-df-cad/fatspacer.webp" alt="A 3D-model of a 2-layered
+    <img src="/media/fatspacer.webp" loading="lazy" alt="A 3D-model of a 2-layered
     cylinder, where the top cylinder is around half the size of the bottom one." />
 </picture>
 <span>*Go on then, touch it.* 😏</span>
@@ -162,9 +163,9 @@ Initially, I thought I could also make a subtractive helix on the same model,
 but that turned out to be a no-no.
 
 <picture id="fusilli.glb">
-    <source srcset="/build/2025-df-cad/fusilli-small.webp 480w"
+    <source srcset="/media/fusilli-small.webp 480w"
     media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
-    <img src="/build/2025-df-cad/fusilli.webp" alt="A 3D-model of a helical
+    <img src="/media/fusilli.webp" loading="lazy" alt="A 3D-model of a helical
     shape looking a bit like fusilli." />
 </picture>
 
@@ -174,13 +175,13 @@ modelled a couple months back. It's used for attaching an air lock to a bottle
 that has something fermenting in it.
 
 <picture id="bottlecap.glb">
-    <source srcset="/build/2025-df-cad/bottlecap-small.webp 480w"
+    <source srcset="/media/bottlecap-small.webp 480w"
     media="(max-width: 480px) and (max-resolution: 1.4dppx)" />
-    <img src="/build/2025-df-cad/bottlecap.webp" alt="A 3D-model of a bottle
+    <img src="/media/bottlecap.webp" loading="lazy" alt="A 3D-model of a bottle
     cap that has a hole in the middle." />
 </picture>
 
 Here are all the project files for the above models zipped in a neat little
-package: <a href="/build/2025-df-cad/projects.zip" download="projects.zip">ZIP</a>
+package: <a href="/media/projects.zip" download="projects.zip">ZIP</a>
 
 Till next week 👋

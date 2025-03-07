@@ -7,15 +7,16 @@ pub struct AppCtx {
     pub robots: Vec<String>,
 }
 
-pub enum PageKind<'a> {
+pub enum PageKind {
     Index,
     About { content: String },
     List { content: String },
-    Post { title: &'a str, content: String },
+    Post { title: String, content: String },
 }
 
 #[derive(Debug)]
 pub enum Tag {
+    Fab,
     Rust,
     Javascript,
     Typescript,
@@ -24,19 +25,16 @@ pub enum Tag {
     Electronics,
     SysAdmin,
 }
-
-// #[derive(Debug, FromRow, Type)]
-// pub struct Post {
-//     id: u32,
-//     pub path: String,
-//     pub endpoint: String,
-//     // tags: Option<Vec<Tag>>,
-// }
+#[derive(Debug, FromRow, Type)]
+pub struct Media {
+    pub mime: String,
+    pub data: String,
+}
 
 #[derive(Debug, FromRow, Type)]
-pub struct PostMeta {
-    pub endpoint: String,
-    pub path: String,
+pub struct Post {
+    pub title: String,
+    pub content: String,
 }
 
 #[derive(Debug, FromRow, Type, Serialize)]

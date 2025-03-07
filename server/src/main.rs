@@ -33,6 +33,7 @@ async fn main() -> Result<(), AppError> {
             .service(routes::posts)
             .service(routes::showcase)
             .service(routes::get_post)
+            .service(routes::get_media)
             .service(Files::new("/", "./client"))
     })
     .bind((ip, port))?;

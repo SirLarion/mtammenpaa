@@ -17,17 +17,23 @@ td {
   font-family: "Oak Sans";
 }
 
-table td:first-of-type {
-  fon
+table td:first-of-type,
+sup {
+  font-weight: 600;
 }
 
-td > span {
+td > span,
+p > sup {
   font-size: 0.75rem;
 }
 
 a {
   font-weight: 600;
   text-decoration: none;
+}
+
+aside {
+  font-style: italic;
 }
 
 u,
@@ -103,7 +109,7 @@ blockquote > p {
 
   i,
   p,
-  span, 
+  span,
   ol > li {
     font-size: 1.25rem;
   }
@@ -111,7 +117,8 @@ blockquote > p {
   code,
   pre,
   pre span,
-  td > span {
+  td > span,
+  p > sup {
     font-size: 1rem;
   }
 

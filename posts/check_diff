@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+t0=$( stat -c %Y $1 )
+t1=$( sqlite3 $DIFF_DB "SELECT timestamp FROM timestamps WHERE path = '$1'" )
+
+if [[ -z $t1 ]]; then
+  sqlite3 $DIFF_DB "INSERT INTO timestamps (path, timestamp) VALUES ('$1', $t0)"
+elif [[ $t0 -gt $t1 ]]; then
+  sqlite3 $DIFF_DB "UPDATE timestamps SET timestamp = $t0 WHERE path = '$1'"
+
+fi
+
+echo $((${t1:-0} - $t0))

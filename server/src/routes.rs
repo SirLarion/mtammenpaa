@@ -2,14 +2,12 @@ use actix_files::NamedFile;
 use actix_web::{get, web, HttpRequest, HttpResponse};
 use minijinja::context;
 use serde::Deserialize;
-use std::{fs, io::Read};
+use sqlx::Row;
 
-use crate::types::PreviewMeta;
-use crate::util::{build_page, build_preview_item, get_preview_meta};
 use crate::{
     error::AppError,
-    types::{AppCtx, PageKind, PostMeta, PostPreview},
-    util::get_generated_colors,
+    types::{AppCtx, Media, PageKind, Post, PostPreview, PreviewMeta},
+    util::{build_page, build_preview_item, get_generated_colors},
 };
 
 fn is_htmx_req(req: &HttpRequest) -> bool {
@@ -46,9 +44,11 @@ pub async fn index(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRespo
 
 #[get("/about")]
 pub async fn about(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
-    let file = NamedFile::open("./client/build/About/content.html")?;
-    let mut content = String::new();
-    file.file().read_to_string(&mut content)?;
+    ctx.db_pool.acquire().await?;
+    let data = sqlx::query("SELECT content FROM posts WHERE title = 'About';")
+        .fetch_one(&ctx.db_pool)
+        .await?;
+    let content: String = data.try_get("content")?;
 
     let out = build_page(&ctx.jinja, PageKind::About { content }, is_htmx_req(&req))?;
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
@@ -66,16 +66,11 @@ pub async fn showcase(ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> 
         preview: build_preview_item(&ctx.jinja, &random_data)?,
     };
 
-    let latest_data = sqlx::query_as::<_, PostMeta>(
-        "SELECT endpoint, path FROM posts ORDER BY updated_at DESC LIMIT 1;",
+    let latest = sqlx::query_as::<_, PostPreview>(
+        "SELECT endpoint, preview FROM posts WHERE published_at NOT NULL ORDER BY published_at DESC LIMIT 1;",
     )
     .fetch_one(&ctx.db_pool)
     .await?;
-
-    let latest = PostPreview {
-        endpoint: latest_data.endpoint.clone(),
-        preview: build_preview_item(&ctx.jinja, &get_preview_meta(latest_data.path)?)?,
-    };
 
     let template = ctx.jinja.get_template("showcase.html")?;
 
@@ -88,22 +83,15 @@ pub async fn showcase(ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> 
 pub async fn posts(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     ctx.db_pool.acquire().await?;
 
-    let meta_posts = sqlx::query_as::<_, PostMeta>(
-        "SELECT endpoint, path FROM posts ORDER BY updated_at DESC LIMIT 10;",
+    let posts = sqlx::query_as::<_, PostPreview>(
+        "SELECT endpoint, preview 
+        FROM posts 
+        WHERE title != 'About' AND published_at NOT NULL 
+        ORDER BY published_at DESC 
+        LIMIT 10;",
     )
     .fetch_all(&ctx.db_pool)
     .await?;
-
-    let posts = meta_posts
-        .into_iter()
-        .map(|post| {
-            let PostMeta { endpoint, path } = post;
-            Ok(PostPreview {
-                endpoint,
-                preview: build_preview_item(&ctx.jinja, &get_preview_meta(path)?)?,
-            })
-        })
-        .collect::<Result<Vec<PostPreview>, AppError>>()?;
 
     let (df_posts, posts): (Vec<_>, Vec<_>) = posts
         .into_iter()
@@ -123,22 +111,37 @@ pub async fn posts(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpRespo
 pub async fn get_post(req: HttpRequest, ctx: web::Data<AppCtx>) -> Result<HttpResponse, AppError> {
     ctx.db_pool.acquire().await?;
 
-    let PostMeta { path, .. } =
-        sqlx::query_as::<_, PostMeta>("SELECT endpoint, path FROM posts WHERE endpoint = $1;")
+    let Post { title, content } =
+        sqlx::query_as::<_, Post>("SELECT title, content FROM posts WHERE endpoint = $1;")
             .bind(req.path())
             .fetch_one(&ctx.db_pool)
             .await?;
 
-    let content = fs::read_to_string(format!("./client/build/{path}/content.html"))?;
-    let meta = get_preview_meta(path)?;
-
     let out = build_page(
         &ctx.jinja,
-        PageKind::Post {
-            title: &meta.display_name,
-            content,
-        },
+        PageKind::Post { title, content },
         is_htmx_req(&req),
     )?;
     Ok(HttpResponse::Ok().body(web::Bytes::from_owner(out)))
+}
+
+#[get("/media/{file}")]
+pub async fn get_media(
+    info: web::Path<String>,
+    ctx: web::Data<AppCtx>,
+) -> Result<HttpResponse, AppError> {
+    ctx.db_pool.acquire().await?;
+    let path = info.into_inner();
+
+    let media = sqlx::query_as::<_, Media>("SELECT mime, data FROM media WHERE path = $1;")
+        .bind(path)
+        .fetch_one(&ctx.db_pool)
+        .await?;
+
+    let mime_type: mime::Mime = media.mime.parse()?;
+    let data: Vec<u8> = hex::decode(media.data)?;
+
+    Ok(HttpResponse::Ok()
+        .content_type(mime_type)
+        .body(web::Bytes::from_iter(data.into_iter())))
 }

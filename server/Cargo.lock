@@ -1076,6 +1076,7 @@ dependencies = [
  "actix-files",
  "actix-web",
  "dotenv",
+ "hex",
  "listenfd",
  "mime",
  "minijinja",

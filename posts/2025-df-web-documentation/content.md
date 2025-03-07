@@ -1,8 +1,8 @@
 <picture>
-    <source srcset="/build/2025-df-web-documentation/code-dark.webp 1x" media="(prefers-color-scheme: dark)">
-    <source srcset="/build/2025-df-web-documentation/code-light-small.webp 480w" media="(max-width: 480px) and (max-resolution: 1dppx)">
-    <source srcset="/build/2025-df-web-documentation/code-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px) and (max-resolution: 1dppx)">
-    <img src="/build/2025-df-web-documentation/code-light.webp" alt="Rust code displaying the implementation of a web server endpoint.">
+    <source srcset="/media/code-dark.webp 1x" media="(prefers-color-scheme: dark)">
+    <source srcset="/media/code-light-small.webp 480w" media="(max-width: 480px) and (max-resolution: 1dppx)">
+    <source srcset="/media/code-dark-small.webp 480w" media="(prefers-color-scheme: dark) and (max-width: 480px) and (max-resolution: 1dppx)">
+    <img src="/media/code-light.webp" fetchpriority="high" alt="Rust code displaying the implementation of a web server endpoint.">
 </picture>
 <span>
     <em>
@@ -185,11 +185,11 @@ source selection too. For example, for the image on this page:
 ```html 
 <picture>
     <source 
-      srcset="/build/2025-df-web-documentation/code-dark.webp" 
+      srcset="/media/code-dark.webp" 
       media="(prefers-color-scheme: dark)"
     />
     <img 
-      src="/build/2025-df-web-documentation/code-light.webp" 
+      src="/media/code-light.webp" 
       alt="Rust code displaying the implementation of a web server endpoint." 
       width="960"
     />

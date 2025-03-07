@@ -192,11 +192,6 @@ fn create_generated_css_variables(h: f32) -> String {
     )
 }
 
-pub fn get_preview_meta(path: String) -> Result<PreviewMeta, AppError> {
-    let raw_str = fs::read_to_string(format!("./client/build/{path}/preview.json"))?;
-    Ok(serde_json::from_str::<PreviewMeta>(&raw_str)?)
-}
-
 pub fn build_preview_item(jinja: &Environment, meta: &PreviewMeta) -> Result<String, AppError> {
     let PreviewMeta {
         path,
@@ -277,15 +272,15 @@ pub fn build_preview_item(jinja: &Environment, meta: &PreviewMeta) -> Result<Str
     )?)
 }
 
-pub fn build_page<'a>(
+pub fn build_page(
     jinja: &Environment,
-    page: PageKind<'a>,
+    page: PageKind,
     is_partial: bool,
 ) -> Result<String, AppError> {
     let (template_name, nav_item, title, content_opt) = match page {
-        PageKind::Index => ("main.html", "front", "mlt", None),
-        PageKind::About { content } => ("post.html", "about", "About", Some(content)),
-        PageKind::List { content } => ("page.html", "posts", "Posts", Some(content)),
+        PageKind::Index => ("main.html", "front", "mlt".to_string(), None),
+        PageKind::About { content } => ("post.html", "about", "About".to_string(), Some(content)),
+        PageKind::List { content } => ("page.html", "posts", "Posts".to_string(), Some(content)),
         PageKind::Post { title, content } => ("post.html", "none", title, Some(content)),
     };
     let nav = build_nav(jinja, nav_item)?;
