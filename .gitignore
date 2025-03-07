@@ -106,3 +106,4 @@ server/target/
 .tern-port
 
 *.tar.gz
+*.sqlite

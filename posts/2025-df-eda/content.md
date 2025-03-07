@@ -212,6 +212,9 @@ time, but here we are 🤔. Of course, creating this strange-looking piece of
 steak is very far from anything useful, but now I know my way around the
 software at least.
 
+Here's the project files as usual: <a href="/media/xiao-kicad-test.zip"
+download="xiao-kicad-test.zip">ZIP</a>
+
 I'll have to hold off on actually milling this bad boy (or preferably some other
 board that's actually meaningful in any way) for a moment as next week we'll be
 looking at CNC machining in general to get the basic process down. After *that*
